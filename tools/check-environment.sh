@@ -61,22 +61,19 @@ check_studio()
 # is pkg the right version?
 check_pkg_ver()
 {
-	ver="`pkg list pkg://openindiana.org/package/pkg | awk \
-		'BEGIN{SKIP=1}(SKIP==1){SKIP=0;next}{print $2}'`"
+	ver="`/usr/bin/pkg list -H pkg:/package/pkg | \
+		/usr/bin/awk '{print $2}' | /usr/bin/sed 's/.*-//g'`"
 	resp="can't determine goodness"
 
-	case "$ver" in
-		0.5.11-0.*)
-			pkgver="`echo $ver | cut -d- -f2 | cut -d. -f2`"
-			;;
-		*)
-			;;
-	esac
+	okver=1.1
+	ok=`echo "if ($ver >= $okver) r=1 ; if ($ver < $okver) r=2 ; r" | bc`
 
-	case "$pkgver" in
-		[0-9][0-9][0-9])
+	case "$ok" in
+		2)
 			resp="too old"
-			[ "$pkgver" -ge 151 ] && resp="ok"
+			;;
+		1)
+			resp="ok"
 			;;
 		*)
 			;;
