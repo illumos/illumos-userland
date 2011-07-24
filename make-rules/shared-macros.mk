@@ -23,22 +23,11 @@
 
 PATH=/usr/bin:/usr/gnu/bin
 
-# The location of an internal mirror of community source archives that we build
-# in this gate.  This mirror has been seeded to include "custom" source archives
-# for a few components where the communities either no longer provide matching
-# source archives or we have changes that aren't reflected in their archives or
-# anywhere else.
-INTERNAL_ARCHIVE_MIRROR =	http://userland.us.oracle.com/source-archives
+# The location of a mirror of community source archives that we build in this
+# gate.
+ARCHIVE_MIRROR = http://dlc.openindiana.org/oi-build/source-archives
 
-# The location of an external mirror of community source archives that we build
-# in this gate.  The external mirror is a replica of the internal mirror.
-EXTERNAL_ARCHIVE_MIRROR = \
-	http://static.opensolaris.org/action/browse/userland/tarball/userland
-
-# Default to looking for source archives on the internal mirror and the external
-# mirror before we hammer on the community source archive repositories.
-export DOWNLOAD_SEARCH_PATH +=	$(INTERNAL_ARCHIVE_MIRROR)
-export DOWNLOAD_SEARCH_PATH +=	$(EXTERNAL_ARCHIVE_MIRROR)
+export DOWNLOAD_SEARCH_PATH +=	$(ARCHIVE_MIRROR)
 
 # The workspace starts at the mercurial root
 export WS_TOP ?=		$(shell hg root)
@@ -62,13 +51,9 @@ PUBLISHER ?=	$(CONSOLIDATION)
 
 ROOT =			/
 
-# get the most recent build number from the last mercurial tag
-LAST_HG_TAG =	$(shell hg tags -q | grep build- | head -1)
-LAST_BUILD_NUM = $(LAST_HG_TAG:build-%=%)
-
 OS_VERSION =		$(shell uname -r)
 SOLARIS_VERSION =	$(OS_VERSION:5.%=2.%)
-BUILD_NUM =		0.$(shell expr $(LAST_BUILD_NUM) + 1)
+BUILD_NUM =		1.1
 BUILD_VERSION =		$(OS_VERSION)-$(BUILD_NUM)
 
 
@@ -95,7 +80,7 @@ PKG_REPO =	file:$(WS_REPO)
 
 # Set a default reference repository against which pkglint is run, in case it
 # hasn't been set in the environment.
-CANONICAL_REPO ?=		http://ipkg.us.oracle.com/solaris11/dev/
+CANONICAL_REPO ?=		http://pkg.openindiana.org/experimental/
 
 COMPONENT_DIR =	$(shell pwd)
 SOURCE_DIR =	$(COMPONENT_DIR)/$(COMPONENT_SRC)
