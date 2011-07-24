@@ -85,7 +85,7 @@ check_pkg_ver()
 # check that a given package is installed
 _check_pkg()
 {
-	if pkg list pkg://openindiana.org/$1 > /dev/null 2> /dev/null ; then
+	if pkg list $1 > /dev/null 2> /dev/null ; then
 		echo "package $1 ... installed"
 	else
 		echo "package $1 ... not installed"
@@ -95,19 +95,42 @@ _check_pkg()
 # we need all these packages for oi-build
 check_pkg_list()
 {
-	for p in developer/versioning/mercurial developer/build/ant developer/gcc-3 \
-		system/library/math/header-math developer/build/gnu-make \
-		developer/build/libtool developer/build/autoconf \
-		developer/build/automake-110 library/libtool/libltdl \
-		archiver/gnu-tar compress/p7zip compress/unzip \
-		developer/gnome/gettext developer/lexer/flex \
-		developer/build/make developer/parser/bison \
-		developer/macro/gnu-m4 developer/object-file \
-		developer/macro/cpp file/gnu-coreutils file/gnu-findutils \
-		library/libxslt library/pcre text/gawk text/gnu-diffutils \
-		text/gnu-gettext text/gnu-grep text/gnu-patch text/gnu-sed \
-		text/groff text/texinfo developer/java/jdk \
-		developer/java/junit ; do
+	for p in \
+		pkg:/archiver/gnu-tar \
+		pkg:/compress/p7zip \
+		pkg:/compress/unzip \
+		pkg:/developer/build/ant \
+		pkg:/developer/build/autoconf \
+		pkg:/developer/build/automake-110 \
+		pkg:/developer/build/gnu-make \
+		pkg:/developer/build/libtool \
+		pkg:/developer/build/make \
+		pkg:/developer/gcc-3 \
+		pkg:/developer/gnome/gettext \
+		pkg:/developer/java/jdk \
+		pkg:/developer/java/junit \
+		pkg:/developer/lexer/flex \
+		pkg:/developer/macro/cpp \
+		pkg:/developer/macro/gnu-m4 \
+		pkg:/developer/object-file \
+		pkg:/developer/parser/bison \
+		pkg:/developer/versioning/mercurial \
+		pkg:/file/gnu-coreutils \
+		pkg:/file/gnu-findutils \
+		pkg:/library/libtool/libltdl \
+		pkg:/library/libxslt \
+		pkg:/library/pcre \
+		pkg:/runtime/perl-512 \
+		pkg:/system/library/math/header-math \
+		pkg:/text/gawk \
+		pkg:/text/gnu-diffutils \
+		pkg:/text/gnu-gettext \
+		pkg:/text/gnu-grep \
+		pkg:/text/gnu-patch \
+		pkg:/text/gnu-sed \
+		pkg:/text/groff \
+		pkg:/text/texinfo \
+	; do
 		_check_pkg $p
 	done
 }
