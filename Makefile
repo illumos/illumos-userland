@@ -36,6 +36,9 @@ clobber:	TARGET = clobber
 setup:		TARGET = setup
 test:		TARGET = test
 
+check-environment:
+	@./tools/check-environment.sh
+
 .DEFAULT:	publish
 
 download setup prep build install publish validate clean clobber \
