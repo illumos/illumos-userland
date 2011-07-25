@@ -1,0 +1,52 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, OpenIndiana project. All rights reserved.
+#
+
+set name=pkg.fmri value=pkg:/gcc44-gmp@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="The GNU Multiple Precision (Bignum) Library"
+#set name=info.classification value="org.opensolaris.category.2008:XXX Classification XXX"
+set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
+set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+license gmp.license license="LGPLv3"
+
+dir path=usr
+dir path=usr/gcc
+dir path=usr/gcc/4.4
+dir path=usr/gcc/4.4/include
+dir path=usr/gcc/4.4/lib
+dir path=usr/gcc/4.4/share
+dir path=usr/gcc/4.4/share/info
+file path=usr/gcc/4.4/include/gmp.h
+file path=usr/gcc/4.4/include/gmpxx.h
+file path=usr/gcc/4.4/lib/libgmp.la
+file path=usr/gcc/4.4/lib/libgmp.so.3.5.2
+file path=usr/gcc/4.4/lib/libgmpxx.la
+file path=usr/gcc/4.4/lib/libgmpxx.so.4.1.2
+file path=usr/gcc/4.4/share/info/gmp.info
+file path=usr/gcc/4.4/share/info/gmp.info-1
+file path=usr/gcc/4.4/share/info/gmp.info-2
+link path=usr/gcc/4.4/lib/libgmp.so target=libgmp.so.3.5.2
+link path=usr/gcc/4.4/lib/libgmp.so.3 target=libgmp.so.3.5.2
+link path=usr/gcc/4.4/lib/libgmpxx.so target=libgmpxx.so.4.1.2
+link path=usr/gcc/4.4/lib/libgmpxx.so.4 target=libgmpxx.so.4.1.2
