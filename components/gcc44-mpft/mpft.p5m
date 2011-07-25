@@ -1,0 +1,60 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, OpenIndiana project. All rights reserved.
+#
+
+set name=pkg.fmri value=pkg:/gcc44-mpfr@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="MPFR library - C library for multiple-precision floating-point computations with correct rounding"
+#set name=info.classification value="org.opensolaris.category.2008:XXX Classification XXX"
+set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
+set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+license mpfr.license license="LGPLv3"
+
+dir path=usr
+dir path=usr/gcc
+dir path=usr/gcc/4.4
+dir path=usr/gcc/4.4/include
+dir path=usr/gcc/4.4/lib
+dir path=usr/gcc/4.4/share
+dir path=usr/gcc/4.4/share/doc
+dir path=usr/gcc/4.4/share/doc/mpfr
+dir path=usr/gcc/4.4/share/doc/mpfr/examples
+dir path=usr/gcc/4.4/share/info
+file path=usr/gcc/4.4/include/mpf2mpfr.h
+file path=usr/gcc/4.4/include/mpfr.h
+file path=usr/gcc/4.4/lib/libmpfr.la
+file path=usr/gcc/4.4/lib/libmpfr.so.1.2.2
+file path=usr/gcc/4.4/share/doc/mpfr/AUTHORS
+file path=usr/gcc/4.4/share/doc/mpfr/BUGS
+file path=usr/gcc/4.4/share/doc/mpfr/COPYING
+file path=usr/gcc/4.4/share/doc/mpfr/COPYING.LIB
+file path=usr/gcc/4.4/share/doc/mpfr/FAQ.html
+file path=usr/gcc/4.4/share/doc/mpfr/NEWS
+file path=usr/gcc/4.4/share/doc/mpfr/TODO
+file path=usr/gcc/4.4/share/doc/mpfr/examples/ReadMe
+file path=usr/gcc/4.4/share/doc/mpfr/examples/divworst.c
+file path=usr/gcc/4.4/share/doc/mpfr/examples/rndo-add.c
+file path=usr/gcc/4.4/share/doc/mpfr/examples/sample.c
+file path=usr/gcc/4.4/share/info/mpfr.info
+link path=usr/gcc/4.4/lib/libmpfr.so target=libmpfr.so.1.2.2
+link path=usr/gcc/4.4/lib/libmpfr.so.1 target=libmpfr.so.1.2.2
