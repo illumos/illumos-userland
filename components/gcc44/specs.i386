@@ -1,0 +1,145 @@
+*asm:
+--traditional-format %{v:-V} %{Qy:} %{!Qn:-Qy} %{n} %{T} %{Ym,*} %{Yd,*} %{Wa,*:%*} %{m32:--32} %{m64:--64} -s %(asm_cpu)
+
+*asm_debug:
+%{!g0:%{gstabs*:--gstabs}%{!gstabs*:%{g*:--gdwarf2}}} %{fdebug-prefix-map=*:--debug-prefix-map %*}
+
+*asm_final:
+
+
+*asm_options:
+%{--target-help:%:print-asm-header()} %{v} %{w:-W} %{I*} %a %Y %{c:%W{o*}%{!o*:-o %w%b%O}}%{!c:-o %d%w%u%O}
+
+*invoke_as:
+%{!S:-o %|.s |
+ as %(asm_options) %|.s %A }
+
+*cpp:
+%{,assembler-with-cpp:-P} %(cpp_subtarget)
+
+*cpp_options:
+%(cpp_unique_options) %1 %{m*} %{std*&ansi&trigraphs} %{W*&pedantic*} %{w} %{f*} %{g*:%{!g0:%{g*} %{!fno-working-directory:-fworking-directory}}} %{O*} %{undef} %{save-temps:-fpch-preprocess}
+
+*cpp_debug_options:
+%{d*}
+
+*cpp_unique_options:
+%{C|CC:%{!E:%eGCC does not support -C or -CC without -E}} %{!Q:-quiet} %{nostdinc*} %{C} %{CC} %{v} %{I*&F*} %{P} %I %{MD:-MD %{!o:%b.d}%{o*:%.d%*}} %{MMD:-MMD %{!o:%b.d}%{o*:%.d%*}} %{M} %{MM} %{MF*} %{MG} %{MP} %{MQ*} %{MT*} %{!E:%{!M:%{!MM:%{!MT:%{!MQ:%{MD|MMD:%{o*:-MQ %*}}}}}}} %{remap} %{g3|ggdb3|gstabs3|gcoff3|gxcoff3|gvms3:-dD} %{H} %C %{D*&U*&A*} %{i*} %Z %i %{fmudflap:-D_MUDFLAP -include mf-runtime.h} %{fmudflapth:-D_MUDFLAP -D_MUDFLAPTH -include mf-runtime.h} %{E|M|MM:%W{o*}}
+
+*trad_capable_cpp:
+cc1 -E %{traditional|ftraditional|traditional-cpp:-traditional-cpp}
+
+*cc1:
+%(cc1_cpu) %{profile:-p}
+
+*cc1_options:
+%{pg:%{fomit-frame-pointer:%e-pg and -fomit-frame-pointer are incompatible}} %1 %{!Q:-quiet} -dumpbase %B %{d*} %{m*} %{a*} %{c|S:%{o*:-auxbase-strip %*}%{!o*:-auxbase %b}}%{!c:%{!S:-auxbase %b}} %{g*} %{O*} %{W*&pedantic*} %{w} %{std*&ansi&trigraphs} %{v:-version} %{pg:-p} %{p} %{f*} %{undef} %{Qn:-fno-ident} %{--help:--help} %{--target-help:--target-help} %{--help=*:--help=%(VALUE)} %{!fsyntax-only:%{S:%W{o*}%{!o*:-o %b.s}}} %{fsyntax-only:-o %j} %{-param*} %{fmudflap|fmudflapth:-fno-builtin -fno-merge-constants} %{coverage:-fprofile-arcs -ftest-coverage}
+
+*cc1plus:
+
+
+*link_gcc_c_sequence:
+%G %L %G
+
+*link_ssp:
+%{fstack-protector|fstack-protector-all:-lssp_nonshared -lssp}
+
+*endfile:
+crtend.o%s crtn.o%s
+
+*link:
+%{h*} %{v:-V}    %{b}    %{static:-dn -Bstatic}    %{shared:-G -dy %{!mimpure-text:-z text}}    %{symbolic:-Bsymbolic -G -dy -z text}    %(link_arch)    %{Qy:} %{!Qn:-Qy}
+
+*lib:
+%{compat-bsd:-lucb -lsocket -lnsl -lelf -laio}    %{!shared:     %{!symbolic:       %{pthreads|pthread:-lpthread}        %{!pthreads:%{!pthread:%{threads:-lthread}}}        %{p|pg:-ldl} -lc}}
+
+*mfwrap:
+ %{static: %{fmudflap|fmudflapth:  --wrap=malloc --wrap=free --wrap=calloc --wrap=realloc --wrap=mmap --wrap=munmap --wrap=alloca} %{fmudflapth: --wrap=pthread_create}} %{fmudflap|fmudflapth: --wrap=main}
+
+*mflib:
+%{fmudflap|fmudflapth: -export-dynamic}
+
+*link_gomp:
+
+
+*libgcc:
+%{static|static-libgcc:-R/usr/gcc/4.4/lib -lgcc -lgcc_eh}%{!static:%{!static-libgcc:%{!shared:%{!shared-libgcc:-R/usr/gcc/4.4/lib -lgcc -lgcc_eh}%{shared-libgcc:-R/usr/gcc/4.4/lib -lgcc_s -lgcc}}%{shared:-R/usr/gcc/4.4/lib -lgcc_s}}}
+
+*startfile:
+%{!shared: 			 %{!symbolic: 			  %{p:mcrt1.o%s}                           %{!p: 	                    %{pg:gcrt1.o%s gmon.o%s}                             %{!pg:crt1.o%s}}}} 			crti.o%s %(startfile_arch) 			crtbegin.o%s
+
+*switches_need_spaces:
+
+
+*cross_compile:
+0
+
+*version:
+4.4.4
+
+*multilib:
+. !m32 !m64;32:. m32 !m64;amd64:amd64 !m32 m64;
+
+*multilib_defaults:
+m32
+
+*multilib_extra:
+
+
+*multilib_matches:
+m32 m32;m64 m64;
+
+*multilib_exclusions:
+
+
+*multilib_options:
+m32/m64
+
+*linker:
+collect2
+
+*link_libgcc:
+%D
+
+*md_exec_prefix:
+/usr/ccs/bin/
+
+*md_startfile_prefix:
+
+
+*md_startfile_prefix_1:
+
+
+*startfile_prefix_spec:
+
+
+*sysroot_spec:
+--sysroot=%R
+
+*sysroot_suffix_spec:
+
+
+*sysroot_hdrs_suffix_spec:
+
+
+*cc1_cpu:
+%{mcpu=*:-mtune=%* %n`-mcpu=' is deprecated. Use `-mtune=' or '-march=' instead.
+} %<mcpu=* %{mintel-syntax:-masm=intel %n`-mintel-syntax' is deprecated. Use `-masm=intel' instead.
+} %{mno-intel-syntax:-masm=att %n`-mno-intel-syntax' is deprecated. Use `-masm=att' instead.
+}%{march=native:%<march=native %:local_cpu_detect(arch)   %{!mtune=*:%<mtune=native %:local_cpu_detect(tune)}} %{mtune=native:%<mtune=native %:local_cpu_detect(tune)}
+
+*cpp_subtarget:
+%{pthreads|pthread:-D_REENTRANT -D_PTHREADS} %{!pthreads:%{!pthread:%{threads:-D_REENTRANT -D_SOLARIS_THREADS}}} %{compat-bsd:-iwithprefixbefore ucbinclude -I/usr/ucbinclude} 
+
+*asm_cpu:
+
+
+*startfile_arch:
+%{ansi:values-Xc.o%s} 			    %{!ansi:values-Xa.o%s}
+
+*link_arch:
+%{m64:%{G:-G}    %{YP,*}    %{R*}    %{compat-bsd:      %{!YP,*:%{p|pg:-Y P,/usr/ucblib/64:/usr/lib/libp/64:/lib/64:/usr/lib/64}              %{!p:%{!pg:-Y P,/usr/ucblib/64:/lib:/usr/lib/64}}}              -R /usr/ucblib/64}    %{!compat-bsd:      %{!YP,*:%{p|pg:-Y P,/usr/lib/libp/64:/lib/64:/usr/lib/64}              %{!p:%{!pg:-Y P,/lib/64:/usr/lib/64}}}}}%{!m64:%{G:-G}    %{YP,*}    %{R*}    %{compat-bsd:      %{!YP,*:%{p|pg:-Y P,/usr/ucblib:/usr/ccs/lib/libp:/usr/lib/libp:/usr/ccs/lib:/usr/lib}              %{!p:%{!pg:-Y P,/usr/ucblib:/usr/ccs/lib:/usr/lib}}}              -R /usr/ucblib}    %{!compat-bsd:      %{!YP,*:%{p|pg:-Y P,/usr/ccs/lib/libp:/usr/lib/libp:/usr/ccs/lib:/usr/lib}              %{!p:%{!pg:-Y P,/usr/ccs/lib:/usr/lib}}}}}
+
+*link_command:
+%{!fsyntax-only:%{!c:%{!M:%{!MM:%{!E:%{!S:    %(linker) %l %{pie:} %X %{o*} %{A} %{d} %{e*} %{m} %{N} %{n} %{r}    %{s} %{t} %{u*} %{x} %{z} %{Z} %{!A:%{!nostdlib:%{!nostartfiles:%S}}}    %{static:} %{L*} %(mfwrap) %(link_libgcc) %o    %{fopenmp|ftree-parallelize-loops=*:%:include(libgomp.spec)%(link_gomp)} %(mflib)    %{fprofile-arcs|fprofile-generate|coverage:-lgcov}    %{!nostdlib:%{!nodefaultlibs:%(link_ssp) %(link_gcc_c_sequence)}}    %{!A:%{!nostdlib:%{!nostartfiles:%E}}} %{T*} }}}}}}
+
