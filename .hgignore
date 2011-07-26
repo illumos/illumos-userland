@@ -1,0 +1,4 @@
+^i386/
+
+^tools/time-(amd64|i86).o$
+^tools/time-(amd64|i86).so$
