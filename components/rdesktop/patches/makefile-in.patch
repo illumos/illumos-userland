@@ -1,0 +1,47 @@
+--- rdesktop-1.7.0/Makefile.in~	Mon Apr 18 03:46:06 2011
++++ rdesktop-1.7.0/Makefile.in	Mon Jul 25 23:45:37 2011
+@@ -10,6 +10,8 @@
+ mandir      = @mandir@
+ datarootdir = @datarootdir@
+ datadir     = @datadir@
++srcdir      = @srcdir@
++VPATH       = @srcdir@
+ 
+ VERSION     = @PACKAGE_VERSION@
+ KEYMAP_PATH = $(datadir)/rdesktop/keymaps/
+@@ -65,7 +67,7 @@
+ .PHONY: installman
+ installman: doc/rdesktop.1
+ 	mkdir -p $(DESTDIR)$(mandir)/man1
+-	cp doc/rdesktop.1 $(DESTDIR)$(mandir)/man1
++	cp $(srcdir)/doc/rdesktop.1 $(DESTDIR)$(mandir)/man1
+ 	chmod 644 $(DESTDIR)$(mandir)/man1/rdesktop.1
+ 
+ .PHONY: installkeymaps
+@@ -72,9 +74,10 @@
+ installkeymaps:
+ 	mkdir -p $(DESTDIR)$(KEYMAP_PATH)
+ # Prevent copying the CVS directory
+-	cp keymaps/?? keymaps/??-?? $(DESTDIR)$(KEYMAP_PATH)
+-	cp keymaps/common $(DESTDIR)$(KEYMAP_PATH)
+-	cp keymaps/modifiers $(DESTDIR)$(KEYMAP_PATH)
++	cp $(srcdir)/keymaps/??  $(DESTDIR)$(KEYMAP_PATH)
++	cp $(srcdir)/keymaps/??-?? $(DESTDIR)$(KEYMAP_PATH)
++	cp $(srcdir)/keymaps/common $(DESTDIR)$(KEYMAP_PATH)
++	cp $(srcdir)/keymaps/modifiers $(DESTDIR)$(KEYMAP_PATH)
+ 	chmod 644 $(DESTDIR)$(KEYMAP_PATH)/*
+ 
+ .PHONY: proto
+@@ -147,12 +150,6 @@
+ 	tar zcvf $@ -C /tmp/rdesktop-make-dist-dir rdesktop
+ 	rm -rf /tmp/rdesktop-make-dist-dir
+ 
+-Makefile: Makefile.in configure
+-	./config.status
+-
+-configure: configure.ac
+-	./bootstrap
+-
+ .SUFFIXES:
+ .SUFFIXES: .c .o
+ 
