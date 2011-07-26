@@ -359,9 +359,9 @@ class UserlandManifestChecker(base.ManifestChecker):
 			engine.error( _("missing license action"),
 				msgid="%s%s.0" % (self.name, pkglint_id))
 
-		if 'opensolaris.arc_url' not in manifest:
-			engine.error( _("missing ARC data (opensolaris.arc_url)"),
-				msgid="%s%s.0" % (self.name, pkglint_id))
+		#if 'opensolaris.arc_url' not in manifest:
+		#	engine.error( _("missing ARC data (opensolaris.arc_url)"),
+		#		msgid="%s%s.0" % (self.name, pkglint_id))
 
 	component_check.pkglint_dest = _(
 		"license actions and iARC information are required if you deliver files.")
