@@ -1,0 +1,12 @@
+diff -ur guilt-0.35/Documentation/Makefile fixed/Documentation/Makefile
+--- guilt-0.35/Documentation/Makefile	2011-07-17 14:12:57.000000000 -0400
++++ fixed/Documentation/Makefile	2011-07-18 13:11:52.189814988 -0400
+@@ -32,7 +32,7 @@
+ man1: $(DOC_MAN1)
+ man7: $(DOC_MAN7)
+ 
+-install: man
++install:
+ 	$(INSTALL) -d -m755 $(DESTDIR)$(man1dir) $(DESTDIR)$(man7dir)
+ 	$(INSTALL) -m644 $(DOC_MAN1) $(DESTDIR)$(man1dir)
+ 	$(INSTALL) -m644 $(DOC_MAN7) $(DESTDIR)$(man7dir)

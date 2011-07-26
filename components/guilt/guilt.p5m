@@ -1,0 +1,112 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Josef 'Jeff' Sipek <jeffpc@josefsipek.net>
+#
+
+<transform file path=usr/share/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/developer/versioning/guilt@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="quilt for git; similar to Mercurial queues"
+set name=info.classification value="org.opensolaris.category.2008:Development/Source Code Management"
+set name=info.upstream_url value="http://www.kernel.org/pub/linux/kernel/people/jsipek/guilt/"
+set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+license guilt.license license='GPLv2'
+
+dir path=usr
+dir path=usr/bin
+dir path=usr/lib
+dir path=usr/lib/guilt
+dir path=usr/share
+dir path=usr/share/man
+dir path=usr/share/man/man1
+dir path=usr/share/man/man7
+file path=usr/bin/guilt
+file path=usr/lib/guilt/guilt-add mode=0555
+file path=usr/lib/guilt/guilt-applied mode=0555
+file path=usr/lib/guilt/guilt-branch mode=0555
+file path=usr/lib/guilt/guilt-commit mode=0555
+file path=usr/lib/guilt/guilt-delete mode=0555
+file path=usr/lib/guilt/guilt-diff mode=0555
+file path=usr/lib/guilt/guilt-export mode=0555
+file path=usr/lib/guilt/guilt-files mode=0555
+file path=usr/lib/guilt/guilt-fold mode=0555
+file path=usr/lib/guilt/guilt-fork mode=0555
+file path=usr/lib/guilt/guilt-graph mode=0555
+file path=usr/lib/guilt/guilt-guard mode=0555
+file path=usr/lib/guilt/guilt-header mode=0555
+file path=usr/lib/guilt/guilt-help mode=0555
+file path=usr/lib/guilt/guilt-import mode=0555
+file path=usr/lib/guilt/guilt-import-commit mode=0555
+file path=usr/lib/guilt/guilt-init mode=0555
+file path=usr/lib/guilt/guilt-new mode=0555
+file path=usr/lib/guilt/guilt-next mode=0555
+file path=usr/lib/guilt/guilt-patchbomb mode=0555
+file path=usr/lib/guilt/guilt-pop mode=0555
+file path=usr/lib/guilt/guilt-prev mode=0555
+file path=usr/lib/guilt/guilt-push mode=0555
+file path=usr/lib/guilt/guilt-rebase mode=0555
+file path=usr/lib/guilt/guilt-refresh mode=0555
+file path=usr/lib/guilt/guilt-repair mode=0555
+file path=usr/lib/guilt/guilt-rm mode=0555
+file path=usr/lib/guilt/guilt-select mode=0555
+file path=usr/lib/guilt/guilt-series mode=0555
+file path=usr/lib/guilt/guilt-status mode=0555
+file path=usr/lib/guilt/guilt-top mode=0555
+file path=usr/lib/guilt/guilt-unapplied mode=0555
+file path=usr/lib/guilt/os.Darwin
+file path=usr/lib/guilt/os.Linux
+file path=usr/lib/guilt/os.SunOS
+file path=usr/share/man/man1/guilt-applied.1
+file path=usr/share/man/man1/guilt-import.1
+file path=usr/share/man/man1/guilt-new.1
+file path=usr/share/man/man1/guilt-push.1
+file path=usr/share/man/man1/guilt-rebase.1
+file path=usr/share/man/man1/guilt-prev.1
+file path=usr/share/man/man1/guilt-top.1
+file path=usr/share/man/man1/guilt-refresh.1
+file path=usr/share/man/man1/guilt-header.1
+file path=usr/share/man/man1/guilt-graph.1
+file path=usr/share/man/man1/guilt-select.1
+file path=usr/share/man/man1/guilt-repair.1
+file path=usr/share/man/man1/guilt-patchbomb.1
+file path=usr/share/man/man1/guilt-guard.1
+file path=usr/share/man/man1/guilt-diff.1
+file path=usr/share/man/man1/guilt-fork.1
+file path=usr/share/man/man1/guilt-unapplied.1
+file path=usr/share/man/man1/guilt-help.1
+file path=usr/share/man/man1/guilt-files.1
+file path=usr/share/man/man1/guilt-next.1
+file path=usr/share/man/man1/guilt-delete.1
+file path=usr/share/man/man1/guilt-series.1
+file path=usr/share/man/man1/guilt-fold.1
+file path=usr/share/man/man1/guilt-init.1
+file path=usr/share/man/man1/guilt-commit.1
+file path=usr/share/man/man1/guilt-pop.1
+file path=usr/share/man/man1/guilt-add.1
+file path=usr/share/man/man1/guilt-export.1
+file path=usr/share/man/man1/guilt-branch.1
+file path=usr/share/man/man1/guilt-status.1
+file path=usr/share/man/man1/guilt-rm.1
+file path=usr/share/man/man1/guilt-import-commit.1
+file path=usr/share/man/man7/guilt.7
+
+depend fmri=developer/versioning/git type=require
