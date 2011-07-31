@@ -122,7 +122,7 @@ $(MANIFEST_BASE)-%.generate:	%.p5m canonical-manifests
 	cat $(METADATA_TEMPLATE) $< >$@
 
 # mogrify the manifest
-$(MANIFEST_BASE)-%.mogrified:	%.p5m $(BUILD_DIR) canonical-manifests
+$(MANIFEST_BASE)-%.mogrified:	%.p5m canonical-manifests
 	$(PKGMOGRIFY) $(PKG_OPTIONS) $< \
 		$(PUBLISH_TRANSFORMS) | \
 		sed -e '/^$$/d' -e '/^#.*$$/d' | uniq >$@
