@@ -80,7 +80,9 @@ PKG_REPO =	file:$(WS_REPO)
 
 # Set a default reference repository against which pkglint is run, in case it
 # hasn't been set in the environment.
-CANONICAL_REPO ?=		http://pkg.openindiana.org/experimental/
+
+# NOTE: Commenting out CANONICAL_REPO due to issue #1310
+#CANONICAL_REPO ?=		http://pkg.openindiana.org/experimental/
 
 COMPONENT_DIR =	$(shell pwd)
 SOURCE_DIR =	$(COMPONENT_DIR)/$(COMPONENT_SRC)
