@@ -46,7 +46,7 @@ publish:	SHELLOPTS=pipefail
 
 SHELL=	/bin/bash
 
-CONSOLIDATION =	userland
+CONSOLIDATION =	oi-build
 PUBLISHER ?=	$(CONSOLIDATION)
 
 ROOT =			/
