@@ -51,6 +51,8 @@ PUBLISHER ?=	$(CONSOLIDATION)
 
 ROOT =			/
 
+PRIV_CMD =		sudo
+
 OS_VERSION =		$(shell uname -r)
 SOLARIS_VERSION =	$(OS_VERSION:5.%=2.%)
 BUILD_NUM =		1.1

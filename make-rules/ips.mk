@@ -95,6 +95,7 @@ MANIFESTS =		$(CANONICAL_MANIFESTS:%=$(MANIFEST_BASE)-%)
 DEPENDED=$(CANONICAL_MANIFESTS:%.p5m=$(MANIFEST_BASE)-%.depend)
 RESOLVED=$(CANONICAL_MANIFESTS:%.p5m=$(MANIFEST_BASE)-%.depend.res)
 PUBLISHED=$(RESOLVED:%.depend.res=%.published)
+PKGINSTALLED=$(PUBLISHED:%.published=%.installed)
 
 COPYRIGHT_FILE ?=	$(COMPONENT_NAME)-$(COMPONENT_VERSION).copyright
 IPS_COMPONENT_VERSION ?=	$(COMPONENT_VERSION)
@@ -108,6 +109,8 @@ IPS_COMPONENT_VERSION ?=	$(COMPONENT_VERSION)
 PUBLISH_STAMP ?= $(BUILD_DIR)/.published-$(MACH)
 
 publish:		build install $(PUBLISH_STAMP)
+
+package-install:	publish $(BUILD_DIR)/.package-installed
 
 sample-manifest:	$(GENERATED).p5m
 
@@ -165,6 +168,14 @@ $(MANIFEST_BASE)-%.published:	$(MANIFEST_BASE)-%.depend.res $(BUILD_DIR)/.linted
 $(BUILD_DIR)/.published-$(MACH):	$(PUBLISHED)
 	$(TOUCH) $@
 
+$(MANIFEST_BASE)-%.installed:	$(MANIFEST_BASE)-%.published
+	@echo "Installing package from manifest: $<"
+	@export PACKAGEFMRI=`cat $< | $(GSED) ':a;N;$!ba;s/\\\n/ /g' | \
+		grep '^set name=pkg.fmri' | $(GSED) 's/.*value=//g'` && \
+		echo "Installing package $$PACKAGEFMRI" && \
+		$(PRIV_CMD) pkg install -v $$PACKAGEFMRI
+	$(TOUCH) $@
+
 print-package-names:	canonical-manifests
 	@cat $(CANONICAL_MANIFESTS) $(WS_TOP)/transforms/print-pkgs | \
 		$(PKGMOGRIFY) $(PKG_OPTIONS) /dev/fd/0 | \
@@ -207,5 +218,7 @@ required-pkgs.mk:	Makefile
 
 pre-prep:	required-pkgs.mk
 
+$(BUILD_DIR)/.package-installed:	$(PKGINSTALLED)
+	$(TOUCH) $@
 
 CLEAN_PATHS +=	required-pkgs.mk
