@@ -173,7 +173,8 @@ $(MANIFEST_BASE)-%.installed:	$(MANIFEST_BASE)-%.published
 	@export PACKAGEFMRI=`cat $< | $(GSED) ':a;N;$!ba;s/\\\n/ /g' | \
 		grep '^set name=pkg.fmri' | $(GSED) 's/.*value=//g'` && \
 		echo "Installing package $$PACKAGEFMRI" && \
-		$(PRIV_CMD) pkg install -v $$PACKAGEFMRI
+		$(PRIV_CMD) pkg install -v $$PACKAGEFMRI ; exit=$$? ; \
+		if [ $$exit -eq 4 ] ; then (exit 0) ; else (exit $$exit) ; fi
 	$(TOUCH) $@
 
 print-package-names:	canonical-manifests
