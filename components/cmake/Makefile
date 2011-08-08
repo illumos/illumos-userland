@@ -20,16 +20,16 @@
 
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
-#
+# Copyright (c) 2011, Bart Coddens
 
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME=		cmake
-COMPONENT_VERSION=	2.6.2
+COMPONENT_VERSION=	2.8.5
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:48d33afaf23d40f2ea9aa2f5018c7213983222c2
-COMPONENT_ARCHIVE_URL=	http://www.cmake.org/files/v2.6/$(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE_HASH= sha1:8dd4c31cbccf1a297829a476a0ef79d1614ca368
+COMPONENT_ARCHIVE_URL=	http://www.cmake.org/files/v2.8/$(COMPONENT_ARCHIVE)
 COMPONENT_PROJECT_URL=  http://www.cmake.org/
 
 include $(WS_TOP)/make-rules/prep.mk
@@ -49,12 +49,6 @@ CONFIGURE_ENV +=	CC="$(CC)"
 CONFIGURE_ENV +=	CXX="$(CXX)"	
 CONFIGURE_ENV +=	LDFLAGS="$(LDFLAGS)"	
 CONFIGURE_ENV +=	MAKE="$(GMAKE)"	
-
-# CmakeCache-txt is created by configure, so we need to patch
-# it after configure
-COMPONENT_POST_CONFIGURE_ACTION =	( cd $(BUILD_DIR_$(BITS)); \
-	$(GPATCH) $(GPATCH_FLAGS) < \
-	$(COMPONENT_DIR)/patches-post-config/CmakeCache-txt.patch )
 
 COMPONENT_BUILD_ENV +=	CC="$(CC)"	
 COMPONENT_BUILD_ENV +=	CXX="$(CXX)"	

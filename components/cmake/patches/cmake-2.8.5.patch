@@ -1,0 +1,987 @@
+diff -ru cmake-2.8.5.ori/Modules/CMakeDetermineJavaCompiler.cmake cmake-2.8.5/Modules/CMakeDetermineJavaCompiler.cmake
+--- cmake-2.8.5.ori/Modules/CMakeDetermineJavaCompiler.cmake	2011-08-05 23:02:50.575704658 +0200
++++ cmake-2.8.5/Modules/CMakeDetermineJavaCompiler.cmake	2011-08-06 00:14:20.429472710 +0200
+@@ -55,9 +55,6 @@
+     /usr/bin
+     /usr/lib/java/bin
+     /usr/share/java/bin
+-    /usr/local/bin
+-    /usr/local/java/bin
+-    /usr/local/java/share/bin
+     /usr/java/j2sdk1.4.2_04
+     /usr/lib/j2sdk1.4-sun/bin
+     /usr/java/j2sdk1.4.2_09/bin
+diff -ru cmake-2.8.5.ori/Modules/CMakeDetermineSystem.cmake cmake-2.8.5/Modules/CMakeDetermineSystem.cmake
+--- cmake-2.8.5.ori/Modules/CMakeDetermineSystem.cmake	2011-08-05 23:02:50.575772149 +0200
++++ cmake-2.8.5/Modules/CMakeDetermineSystem.cmake	2011-08-06 00:14:20.429530881 +0200
+@@ -43,7 +43,7 @@
+ 
+ # find out on which system cmake runs
+ IF(CMAKE_HOST_UNIX)
+-  FIND_PROGRAM(CMAKE_UNAME uname /bin /usr/bin /usr/local/bin )
++  FIND_PROGRAM(CMAKE_UNAME uname /bin /usr/bin )
+   IF(CMAKE_UNAME)
+     EXEC_PROGRAM(uname ARGS -s OUTPUT_VARIABLE CMAKE_HOST_SYSTEM_NAME)
+     EXEC_PROGRAM(uname ARGS -r OUTPUT_VARIABLE CMAKE_HOST_SYSTEM_VERSION)
+diff -ru cmake-2.8.5.ori/Modules/FindAVIFile.cmake cmake-2.8.5/Modules/FindAVIFile.cmake
+--- cmake-2.8.5.ori/Modules/FindAVIFile.cmake	2011-08-05 23:02:50.580076761 +0200
++++ cmake-2.8.5/Modules/FindAVIFile.cmake	2011-08-06 00:14:20.433434629 +0200
+@@ -25,12 +25,11 @@
+ IF (UNIX)
+ 
+   FIND_PATH(AVIFILE_INCLUDE_DIR avifile.h
+-    /usr/local/avifile/include
+-    /usr/local/include/avifile
++    /usr/include
+   )
+ 
+   FIND_LIBRARY(AVIFILE_AVIPLAY_LIBRARY aviplay
+-    /usr/local/avifile/lib
++    /usr/lib
+   )
+ 
+ ENDIF (UNIX)
+diff -ru cmake-2.8.5.ori/Modules/FindBLAS.cmake cmake-2.8.5/Modules/FindBLAS.cmake
+--- cmake-2.8.5.ori/Modules/FindBLAS.cmake	2011-08-05 23:02:50.580150290 +0200
++++ cmake-2.8.5/Modules/FindBLAS.cmake	2011-08-06 00:14:20.433506523 +0200
+@@ -92,7 +92,7 @@
+     endif(BLA_STATIC)
+     find_library(${_prefix}_${_library}_LIBRARY
+     NAMES ${_library}
+-    PATHS /usr/local/lib /usr/lib /usr/local/lib64 /usr/lib64 ENV DYLD_LIBRARY_PATH
++    PATHS /usr/lib /usr/lib/64 /usr/lib/32 ENV DYLD_LIBRARY_PATH
+     )
+ 
+    else ( APPLE )
+@@ -101,7 +101,7 @@
+     endif(BLA_STATIC)
+     find_library(${_prefix}_${_library}_LIBRARY
+     NAMES ${_library}
+-    PATHS /usr/local/lib /usr/lib /usr/local/lib64 /usr/lib64 ENV LD_LIBRARY_PATH
++    PATHS /usr/lib /usr/lib/32 /usr/lib/64 ENV LD_LIBRARY_PATH
+     )
+    endif( APPLE )
+     mark_as_advanced(${_prefix}_${_library}_LIBRARY)
+diff -ru cmake-2.8.5.ori/Modules/FindFLTK.cmake cmake-2.8.5/Modules/FindFLTK.cmake
+--- cmake-2.8.5.ori/Modules/FindFLTK.cmake	2011-08-05 23:02:50.580961681 +0200
++++ cmake-2.8.5/Modules/FindFLTK.cmake	2011-08-06 00:14:20.434247877 +0200
+@@ -103,11 +103,8 @@
+     ${FLTK_DIR_SEARCH}
+ 
+     # Look in standard UNIX install locations.
+-    /usr/local/lib/fltk
+     /usr/lib/fltk
+-    /usr/local/include
+     /usr/include
+-    /usr/local/fltk
+     /usr/X11R6/include
+ 
+     # Read from the CMakeSetup registry entries.  It is likely that
+@@ -221,7 +218,6 @@
+     ENDIF()
+ 
+     SET(FLTK_INCLUDE_SEARCH_PATH ${FLTK_INCLUDE_SEARCH_PATH}
+-      /usr/local/fltk
+       /usr/X11R6/include
+       ${_FLTK_POSSIBLE_INCLUDE_DIRS}
+       )
+@@ -242,7 +238,6 @@
+     ENDIF()
+ 
+     SET(FLTK_LIBRARY_SEARCH_PATH ${FLTK_LIBRARY_SEARCH_PATH}
+-      /usr/local/fltk/lib
+       /usr/X11R6/lib
+       ${FLTK_INCLUDE_DIR}/lib
+       ${_FLTK_POSSIBLE_LIBRARY_DIR}
+diff -ru cmake-2.8.5.ori/Modules/FindFLTK2.cmake cmake-2.8.5/Modules/FindFLTK2.cmake
+--- cmake-2.8.5.ori/Modules/FindFLTK2.cmake	2011-08-05 23:02:50.580996433 +0200
++++ cmake-2.8.5/Modules/FindFLTK2.cmake	2011-08-06 00:14:20.434281865 +0200
+@@ -83,11 +83,8 @@
+     ${FLTK2_DIR_SEARCH}
+ 
+     # Look in standard UNIX install locations.
+-    /usr/local/lib/fltk2
+     /usr/lib/fltk2
+-    /usr/local/include
+     /usr/include
+-    /usr/local/fltk2
+     /usr/X11R6/include
+ 
+     # Read from the CMakeSetup registry entries.  It is likely that
+@@ -193,9 +190,7 @@
+     ENDIF(FLTK2_FLUID_EXECUTABLE)
+ 
+     SET(FLTK2_INCLUDE_SEARCH_PATH ${FLTK2_INCLUDE_SEARCH_PATH}
+-      /usr/local/include
+       /usr/include
+-      /usr/local/fltk2
+       /usr/X11R6/include
+       )
+ 
+@@ -203,8 +198,6 @@
+ 
+     SET(FLTK2_LIBRARY_SEARCH_PATH ${FLTK2_LIBRARY_SEARCH_PATH}
+       /usr/lib
+-      /usr/local/lib
+-      /usr/local/fltk2/lib
+       /usr/X11R6/lib
+       ${FLTK2_INCLUDE_DIR}/lib
+       )
+diff -ru cmake-2.8.5.ori/Modules/FindFreetype.cmake cmake-2.8.5/Modules/FindFreetype.cmake
+--- cmake-2.8.5.ori/Modules/FindFreetype.cmake	2011-08-05 23:02:50.581024125 +0200
++++ cmake-2.8.5/Modules/FindFreetype.cmake	2011-08-06 00:14:20.434308584 +0200
+@@ -46,8 +46,6 @@
+   $ENV{FREETYPE_DIR}
+   PATH_SUFFIXES include
+   PATHS
+-  /usr/local/X11R6/include
+-  /usr/local/X11/include
+   /usr/X11/include
+   /sw/include
+   /opt/local/include
+@@ -58,8 +56,6 @@
+   HINTS
+   $ENV{FREETYPE_DIR}/include/freetype2
+   PATHS
+-  /usr/local/X11R6/include
+-  /usr/local/X11/include
+   /usr/X11/include
+   /sw/include
+   /opt/local/include
+@@ -73,8 +69,6 @@
+   $ENV{FREETYPE_DIR}
+   PATH_SUFFIXES lib64 lib
+   PATHS
+-  /usr/local/X11R6
+-  /usr/local/X11
+   /usr/X11
+   /sw
+   /usr/freeware
+diff -ru cmake-2.8.5.ori/Modules/FindGIF.cmake cmake-2.8.5/Modules/FindGIF.cmake
+--- cmake-2.8.5.ori/Modules/FindGIF.cmake	2011-08-05 23:02:50.581146261 +0200
++++ cmake-2.8.5/Modules/FindGIF.cmake	2011-08-06 00:14:20.434412640 +0200
+@@ -45,7 +45,6 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw
+   /opt/local
+diff -ru cmake-2.8.5.ori/Modules/FindGTK.cmake cmake-2.8.5/Modules/FindGTK.cmake
+--- cmake-2.8.5.ori/Modules/FindGTK.cmake	2011-08-05 23:02:50.581355303 +0200
++++ cmake-2.8.5/Modules/FindGTK.cmake	2011-08-06 00:14:20.434600663 +0200
+@@ -36,9 +36,7 @@
+   FIND_PATH( GTK_glibconfig_INCLUDE_PATH NAMES glibconfig.h
+     PATHS
+     /usr/openwin/share/include
+-    /usr/local/include/glib12
+     /usr/lib/glib/include
+-    /usr/local/lib/glib/include
+     /opt/gnome/include
+     /opt/gnome/lib/glib/include
+   )
+diff -ru cmake-2.8.5.ori/Modules/FindGTK2.cmake cmake-2.8.5/Modules/FindGTK2.cmake
+--- cmake-2.8.5.ori/Modules/FindGTK2.cmake	2011-08-05 23:02:50.581400820 +0200
++++ cmake-2.8.5/Modules/FindGTK2.cmake	2011-08-06 00:14:20.434645374 +0200
+@@ -185,10 +185,10 @@
+ 
+     find_path(${_var} ${_hdr}
+         PATHS
+-            /usr/local/lib64
+-            /usr/local/lib
+             /usr/lib64
+             /usr/lib
++	    /usr/lib/32
++	    /usr/lib/64
+             /opt/gnome/include
+             /opt/gnome/lib
+             /opt/openwin/include
+diff -ru cmake-2.8.5.ori/Modules/FindJNI.cmake cmake-2.8.5/Modules/FindJNI.cmake
+--- cmake-2.8.5.ori/Modules/FindJNI.cmake	2011-08-05 23:02:50.581673663 +0200
++++ cmake-2.8.5/Modules/FindJNI.cmake	2011-08-06 00:14:20.434881739 +0200
+@@ -102,12 +102,9 @@
+   ${_JAVA_HOME}/lib
+   ${_JAVA_HOME}
+   /usr/lib
+-  /usr/local/lib
+   /usr/lib/jvm/java/lib
+   /usr/lib/java/jre/lib/{libarch}
+   /usr/lib/jvm/jre/lib/{libarch}
+-  /usr/local/lib/java/jre/lib/{libarch}
+-  /usr/local/share/java/jre/lib/{libarch}
+   /usr/lib/j2sdk1.4-sun/jre/lib/{libarch}
+   /usr/lib/j2sdk1.5-sun/jre/lib/{libarch}
+   /opt/sun-jdk-1.5.0.04/jre/lib/{libarch}
+@@ -139,15 +136,12 @@
+   "[HKEY_LOCAL_MACHINE\\SOFTWARE\\JavaSoft\\Java Development Kit\\${java_install_version};JavaHome]/include"
+   ${_JAVA_HOME}/include
+   /usr/include 
+-  /usr/local/include
+   /usr/lib/java/include
+-  /usr/local/lib/java/include
+   /usr/lib/jvm/java/include
+   /usr/lib/jvm/java-6-sun/include
+   /usr/lib/jvm/java-1.5.0-sun/include
+   /usr/lib/jvm/java-6-sun-1.6.0.00/include       # can this one be removed according to #8821 ? Alex
+   /usr/lib/jvm/java-6-openjdk/include
+-  /usr/local/share/java/include
+   /usr/lib/j2sdk1.4-sun/include
+   /usr/lib/j2sdk1.5-sun/include
+   /opt/sun-jdk-1.5.0.04/include
+diff -ru cmake-2.8.5.ori/Modules/FindJava.cmake cmake-2.8.5/Modules/FindJava.cmake
+--- cmake-2.8.5.ori/Modules/FindJava.cmake	2011-08-05 23:02:50.581639317 +0200
++++ cmake-2.8.5/Modules/FindJava.cmake	2011-08-06 00:14:20.434848344 +0200
+@@ -71,8 +71,6 @@
+ SET(_JAVA_PATHS
+   /usr/lib/java/bin
+   /usr/share/java/bin
+-  /usr/local/java/bin
+-  /usr/local/java/share/bin
+   /usr/java/j2sdk1.4.2_04
+   /usr/lib/j2sdk1.4-sun/bin
+   /usr/java/j2sdk1.4.2_09/bin
+diff -ru cmake-2.8.5.ori/Modules/FindKDE3.cmake cmake-2.8.5/Modules/FindKDE3.cmake
+--- cmake-2.8.5.ori/Modules/FindKDE3.cmake	2011-08-05 23:02:50.581735312 +0200
++++ cmake-2.8.5/Modules/FindKDE3.cmake	2011-08-06 00:14:20.434940583 +0200
+@@ -141,7 +141,6 @@
+   /opt/kde3/include
+   /opt/kde/include
+   /usr/include/kde
+-  /usr/local/include/kde
+   )
+ 
+ #now the KDE library directory
+diff -ru cmake-2.8.5.ori/Modules/FindLAPACK.cmake cmake-2.8.5/Modules/FindLAPACK.cmake
+--- cmake-2.8.5.ori/Modules/FindLAPACK.cmake	2011-08-05 23:02:50.581805567 +0200
++++ cmake-2.8.5/Modules/FindLAPACK.cmake	2011-08-06 00:14:20.435000079 +0200
+@@ -81,7 +81,7 @@
+     endif(BLA_STATIC)
+     find_library(${_prefix}_${_library}_LIBRARY
+     NAMES ${_library}
+-    PATHS /usr/local/lib /usr/lib /usr/local/lib64 /usr/lib64 ENV DYLD_LIBRARY_PATH
++    PATHS /usr/lib /usr/lib/32 /usr/lib/64 ENV DYLD_LIBRARY_PATH
+     )
+     else(APPLE)
+     if(BLA_STATIC)
+@@ -89,7 +89,7 @@
+     endif(BLA_STATIC)
+     find_library(${_prefix}_${_library}_LIBRARY
+     NAMES ${_library}
+-    PATHS /usr/local/lib /usr/lib /usr/local/lib64 /usr/lib64 ENV LD_LIBRARY_PATH
++    PATHS /usr/lib /usr/lib/32 /usr/lib/64 ENV LD_LIBRARY_PATH
+     )
+     endif(APPLE)
+ 
+diff -ru cmake-2.8.5.ori/Modules/FindLua50.cmake cmake-2.8.5/Modules/FindLua50.cmake
+--- cmake-2.8.5.ori/Modules/FindLua50.cmake	2011-08-05 23:02:50.581945200 +0200
++++ cmake-2.8.5/Modules/FindLua50.cmake	2011-08-06 00:14:20.435131568 +0200
+@@ -31,7 +31,6 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw # Fink
+   /opt/local # DarwinPorts
+@@ -43,11 +42,10 @@
+   NAMES lua50 lua5.0 lua-5.0 lua5 lua
+   HINTS
+   $ENV{LUA_DIR}
+-  PATH_SUFFIXES lib64 lib
++  PATH_SUFFIXES lib64 lib lib/32 lib/64
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw
+   /opt/local
+@@ -67,7 +65,6 @@
+     $ENV{LUA_DIR}
+     PATH_SUFFIXES lib64 lib
+     PATHS
+-    /usr/local
+     /usr
+     /sw
+     /opt/local
+diff -ru cmake-2.8.5.ori/Modules/FindLua51.cmake cmake-2.8.5/Modules/FindLua51.cmake
+--- cmake-2.8.5.ori/Modules/FindLua51.cmake	2011-08-05 23:02:50.581983127 +0200
++++ cmake-2.8.5/Modules/FindLua51.cmake	2011-08-06 00:14:20.435157807 +0200
+@@ -31,7 +31,6 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw # Fink
+   /opt/local # DarwinPorts
+@@ -43,11 +42,10 @@
+   NAMES lua51 lua5.1 lua-5.1 lua
+   HINTS
+   $ENV{LUA_DIR}
+-  PATH_SUFFIXES lib64 lib
++  PATH_SUFFIXES lib64 lib lib/32 lib/64
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw
+   /opt/local
+diff -ru cmake-2.8.5.ori/Modules/FindMPEG.cmake cmake-2.8.5/Modules/FindMPEG.cmake
+--- cmake-2.8.5.ori/Modules/FindMPEG.cmake	2011-08-05 23:02:50.582089881 +0200
++++ cmake-2.8.5/Modules/FindMPEG.cmake	2011-08-06 00:14:20.435261263 +0200
+@@ -21,15 +21,15 @@
+ #  License text for the above reference.)
+ 
+ FIND_PATH(MPEG_INCLUDE_DIR mpeg2dec/include/video_out.h
+-  /usr/local/livid
++/usr/include/livid
+ )
+ 
+ FIND_LIBRARY(MPEG_mpeg2_LIBRARY mpeg2
+-  /usr/local/livid/mpeg2dec/libmpeg2/.libs
++  /usr/lib/livid/mpeg2dec
+ )
+ 
+ FIND_LIBRARY( MPEG_vo_LIBRARY vo
+-  /usr/local/livid/mpeg2dec/libvo/.libs
++  /usr/lib/livid/mpeg2dec/libvo/.libs
+ )
+ 
+ # handle the QUIETLY and REQUIRED arguments and set MPEG2_FOUND to TRUE if 
+diff -ru cmake-2.8.5.ori/Modules/FindMatlab.cmake cmake-2.8.5/Modules/FindMatlab.cmake
+--- cmake-2.8.5.ori/Modules/FindMatlab.cmake	2011-08-05 23:02:50.582010742 +0200
++++ cmake-2.8.5/Modules/FindMatlab.cmake	2011-08-06 00:14:20.435183654 +0200
+@@ -60,7 +60,6 @@
+   IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
+     # Regular x86
+     SET(MATLAB_ROOT
+-      /usr/local/matlab-7sp1/bin/glnx86/
+       /opt/matlab-7sp1/bin/glnx86/
+       $ENV{HOME}/matlab-7sp1/bin/glnx86/
+       $ENV{HOME}/redhat-matlab/bin/glnx86/
+@@ -68,7 +67,6 @@
+   ELSE(CMAKE_SIZEOF_VOID_P EQUAL 4)
+     # AMD64:
+     SET(MATLAB_ROOT
+-      /usr/local/matlab-7sp1/bin/glnxa64/
+       /opt/matlab-7sp1/bin/glnxa64/
+       $ENV{HOME}/matlab7_64/bin/glnxa64/
+       $ENV{HOME}/matlab-7sp1/bin/glnxa64/
+@@ -89,7 +87,6 @@
+     )
+   FIND_PATH(MATLAB_INCLUDE_DIR
+     "mex.h"
+-    "/usr/local/matlab-7sp1/extern/include/"
+     "/opt/matlab-7sp1/extern/include/"
+     "$ENV{HOME}/matlab-7sp1/extern/include/"
+     "$ENV{HOME}/redhat-matlab/extern/include/"
+diff -ru cmake-2.8.5.ori/Modules/FindOpenAL.cmake cmake-2.8.5/Modules/FindOpenAL.cmake
+--- cmake-2.8.5.ori/Modules/FindOpenAL.cmake	2011-08-05 23:02:50.582208404 +0200
++++ cmake-2.8.5/Modules/FindOpenAL.cmake	2011-08-06 00:14:20.435362990 +0200
+@@ -68,7 +68,6 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw # Fink
+   /opt/local # DarwinPorts
+@@ -81,11 +80,10 @@
+   NAMES OpenAL al openal OpenAL32
+   HINTS
+   $ENV{OPENALDIR}
+-  PATH_SUFFIXES lib64 lib libs64 libs libs/Win32 libs/Win64
++  PATH_SUFFIXES lib64 lib libs64 libs lib/32 lib/64 libs/Win32 libs/Win64
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw
+   /opt/local
+diff -ru cmake-2.8.5.ori/Modules/FindOpenThreads.cmake cmake-2.8.5/Modules/FindOpenThreads.cmake
+--- cmake-2.8.5.ori/Modules/FindOpenThreads.cmake	2011-08-05 23:02:50.582359061 +0200
++++ cmake-2.8.5/Modules/FindOpenThreads.cmake	2011-08-06 00:14:20.435511160 +0200
+@@ -87,7 +87,7 @@
+         /opt/csw
+         /opt
+         /usr/freeware
+-    PATH_SUFFIXES lib64 lib
++    PATH_SUFFIXES lib64 lib lib/32 lib/64
+ )
+ 
+ find_library(OPENTHREADS_LIBRARY_DEBUG 
+@@ -107,7 +107,7 @@
+         /opt/csw
+         /opt
+         /usr/freeware
+-    PATH_SUFFIXES lib64 lib
++    PATH_SUFFIXES lib64 lib lib/32 lib/64
+ )
+ 
+ if(OPENTHREADS_LIBRARY_DEBUG)
+diff -ru cmake-2.8.5.ori/Modules/FindPHP4.cmake cmake-2.8.5/Modules/FindPHP4.cmake
+--- cmake-2.8.5.ori/Modules/FindPHP4.cmake	2011-08-05 23:02:50.583054034 +0200
++++ cmake-2.8.5/Modules/FindPHP4.cmake	2011-08-06 00:14:20.436128436 +0200
+@@ -22,10 +22,8 @@
+ 
+ SET(PHP4_POSSIBLE_INCLUDE_PATHS
+   /usr/include/php4
+-  /usr/local/include/php4
+   /usr/include/php
+-  /usr/local/include/php
+-  /usr/local/apache/php
++  /usr/php4/include
+   )
+ 
+ SET(PHP4_POSSIBLE_LIB_PATHS
+diff -ru cmake-2.8.5.ori/Modules/FindPNG.cmake cmake-2.8.5/Modules/FindPNG.cmake
+--- cmake-2.8.5.ori/Modules/FindPNG.cmake	2011-08-05 23:02:50.583179655 +0200
++++ cmake-2.8.5/Modules/FindPNG.cmake	2011-08-06 00:14:20.436244677 +0200
+@@ -30,7 +30,7 @@
+ 
+ if(ZLIB_FOUND)
+   find_path(PNG_PNG_INCLUDE_DIR png.h
+-  /usr/local/include/libpng             # OpenBSD
++  /usr/include/libpng
+   )
+ 
+   set(PNG_NAMES ${PNG_NAMES} png libpng png15 libpng15 png15d libpng15d png14 libpng14 png14d libpng14d png12 libpng12 png12d libpng12d)
+diff -ru cmake-2.8.5.ori/Modules/FindPhysFS.cmake cmake-2.8.5/Modules/FindPhysFS.cmake
+--- cmake-2.8.5.ori/Modules/FindPhysFS.cmake	2011-08-05 23:02:50.583081454 +0200
++++ cmake-2.8.5/Modules/FindPhysFS.cmake	2011-08-06 00:14:20.436154356 +0200
+@@ -30,7 +30,6 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw # Fink
+   /opt/local # DarwinPorts
+@@ -42,11 +41,10 @@
+   NAMES physfs
+   HINTS
+   $ENV{PHYSFSDIR}
+-  PATH_SUFFIXES lib64 lib
++  PATH_SUFFIXES lib64 lib lib/32 lib/64
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw
+   /opt/local
+diff -ru cmake-2.8.5.ori/Modules/FindPike.cmake cmake-2.8.5/Modules/FindPike.cmake
+--- cmake-2.8.5.ori/Modules/FindPike.cmake	2011-08-05 23:02:50.583108104 +0200
++++ cmake-2.8.5/Modules/FindPike.cmake	2011-08-06 00:14:20.436179835 +0200
+@@ -22,7 +22,7 @@
+ 
+ FILE(GLOB PIKE_POSSIBLE_INCLUDE_PATHS
+   /usr/include/pike/*
+-  /usr/local/include/pike/*)
++  )
+ 
+ FIND_PATH(PIKE_INCLUDE_PATH program.h
+   ${PIKE_POSSIBLE_INCLUDE_PATHS})
+diff -ru cmake-2.8.5.ori/Modules/FindProducer.cmake cmake-2.8.5/Modules/FindProducer.cmake
+--- cmake-2.8.5.ori/Modules/FindProducer.cmake	2011-08-05 23:02:50.583238302 +0200
++++ cmake-2.8.5/Modules/FindProducer.cmake	2011-08-06 00:14:20.436300974 +0200
+@@ -51,7 +51,6 @@
+   PATHS
+     ~/Library/Frameworks
+     /Library/Frameworks
+-    /usr/local/include
+     /usr/include
+     /sw/include # Fink
+     /opt/local/include # DarwinPorts
+@@ -67,9 +66,8 @@
+   $ENV{PRODUCER_DIR}
+   $ENV{OSG_DIR}
+   $ENV{OSGDIR}
+-  PATH_SUFFIXES lib64 lib
++  PATH_SUFFIXES lib64 lib lib/32 lib/64
+   PATHS
+-  /usr/local
+   /usr
+   /sw
+   /opt/local
+diff -ru cmake-2.8.5.ori/Modules/FindQt.cmake cmake-2.8.5/Modules/FindQt.cmake
+--- cmake-2.8.5.ori/Modules/FindQt.cmake	2011-08-05 23:02:50.583371595 +0200
++++ cmake-2.8.5/Modules/FindQt.cmake	2011-08-06 00:14:20.436418177 +0200
+@@ -82,8 +82,6 @@
+   "[HKEY_CURRENT_USER\\Software\\Trolltech\\Versions\\4.0.0;InstallDir]/include/Qt"
+   ${qt_headers}/Qt
+   $ENV{QTDIR}/include/Qt
+-  /usr/local/qt/include/Qt
+-  /usr/local/include/Qt
+   /usr/lib/qt/include/Qt
+   /usr/include/Qt
+   /usr/share/qt4/include/Qt
+@@ -101,8 +99,6 @@
+   C:/Qt/3.3.3Educational/include
+   $ENV{QTDIR}/include
+   /usr/include/qt3/Qt
+-  /usr/local/qt/include
+-  /usr/local/include
+   /usr/lib/qt/include
+   /usr/include
+   /usr/share/qt3/include
+diff -ru cmake-2.8.5.ori/Modules/FindQt3.cmake cmake-2.8.5/Modules/FindQt3.cmake
+--- cmake-2.8.5.ori/Modules/FindQt3.cmake	2011-08-05 23:02:50.583406810 +0200
++++ cmake-2.8.5/Modules/FindQt3.cmake	2011-08-06 00:14:20.436452157 +0200
+@@ -53,7 +53,6 @@
+   "[HKEY_CURRENT_USER\\Software\\Trolltech\\Qt3Versions\\3.1.0;InstallDir]/include/Qt"
+   $ENV{QTDIR}/include
+   ${GLOB_PATHS_BIN}
+-  /usr/local/qt/include
+   /usr/lib/qt/include
+   /usr/lib/qt3/include
+   /usr/include/qt
+@@ -91,7 +90,6 @@
+   "[HKEY_CURRENT_USER\\Software\\Trolltech\\Qt3Versions\\3.1.0;InstallDir]/lib"
+     $ENV{QTDIR}/lib
+     ${GLOB_PATHS_LIB}
+-    /usr/local/qt/lib
+     /usr/lib/qt/lib
+     /usr/lib/qt3/lib
+     /usr/lib/qt3/lib64
+@@ -111,7 +109,6 @@
+     "[HKEY_CURRENT_USER\\Software\\Trolltech\\Qt3Versions\\3.1.0;InstallDir]/lib"
+     $ENV{QTDIR}/lib
+     ${GLOB_PATHS_LIB}
+-    /usr/local/qt/lib
+     /usr/lib/qt/lib
+     /usr/lib/qt3/lib
+     /usr/lib/qt3/lib64
+@@ -129,7 +126,6 @@
+   "[HKEY_CURRENT_USER\\Software\\Trolltech\\Qt3Versions\\3.1.0;InstallDir]/lib"
+   $ENV{QTDIR}/lib
+   ${GLOB_PATHS_LIB}
+-  /usr/local/qt/lib
+   /usr/lib/qt3/lib
+   /usr/lib/qt3/lib64
+   /usr/share/qt3/lib
+@@ -147,7 +143,6 @@
+   "[HKEY_CURRENT_USER\\Software\\Trolltech\\Qt3Versions\\3.1.0;InstallDir]/include/Qt"
+   $ENV{QTDIR}/bin
+   ${GLOB_PATHS_BIN}
+-  /usr/local/qt/bin
+   /usr/lib/qt/bin
+   /usr/lib/qt3/bin
+   /usr/share/qt3/bin
+@@ -169,7 +164,6 @@
+   "[HKEY_CURRENT_USER\\Software\\Trolltech\\Qt3Versions\\3.2.0;InstallDir]/include/Qt"
+   "[HKEY_CURRENT_USER\\Software\\Trolltech\\Qt3Versions\\3.1.0;InstallDir]/include/Qt"
+   ${GLOB_PATHS_BIN}
+-  /usr/local/qt/bin
+   /usr/lib/qt/bin
+   /usr/lib/qt3/bin
+   /usr/share/qt3/bin
+diff -ru cmake-2.8.5.ori/Modules/FindSDL.cmake cmake-2.8.5/Modules/FindSDL.cmake
+--- cmake-2.8.5.ori/Modules/FindSDL.cmake	2011-08-05 23:02:50.583619899 +0200
++++ cmake-2.8.5/Modules/FindSDL.cmake	2011-08-06 00:14:20.436647059 +0200
+@@ -72,8 +72,6 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local/include/SDL12
+-  /usr/local/include/SDL11 # FreeBSD ports
+   /usr/include/SDL12
+   /usr/include/SDL11
+   /sw # Fink
+@@ -89,7 +87,7 @@
+   NAMES SDL SDL-1.1
+   HINTS
+   $ENV{SDLDIR}
+-  PATH_SUFFIXES lib64 lib
++  PATH_SUFFIXES lib64 lib 
+   PATHS
+   /sw
+   /opt/local
+diff -ru cmake-2.8.5.ori/Modules/FindSDL_image.cmake cmake-2.8.5/Modules/FindSDL_image.cmake
+--- cmake-2.8.5.ori/Modules/FindSDL_image.cmake	2011-08-05 23:02:50.583647474 +0200
++++ cmake-2.8.5/Modules/FindSDL_image.cmake	2011-08-06 00:14:20.436673486 +0200
+@@ -33,13 +33,9 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local/include/SDL
+   /usr/include/SDL
+-  /usr/local/include/SDL12
+-  /usr/local/include/SDL11 # FreeBSD ports
+   /usr/include/SDL12
+   /usr/include/SDL11
+-  /usr/local/include
+   /usr/include
+   /sw/include/SDL # Fink
+   /sw/include
+@@ -60,7 +56,6 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw
+   /opt/local
+diff -ru cmake-2.8.5.ori/Modules/FindSDL_mixer.cmake cmake-2.8.5/Modules/FindSDL_mixer.cmake
+--- cmake-2.8.5.ori/Modules/FindSDL_mixer.cmake	2011-08-05 23:02:50.583679740 +0200
++++ cmake-2.8.5/Modules/FindSDL_mixer.cmake	2011-08-06 00:14:20.436699588 +0200
+@@ -33,13 +33,9 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local/include/SDL
+   /usr/include/SDL
+-  /usr/local/include/SDL12
+-  /usr/local/include/SDL11 # FreeBSD ports
+   /usr/include/SDL12
+   /usr/include/SDL11
+-  /usr/local/include
+   /usr/include
+   /sw/include/SDL # Fink
+   /sw/include
+@@ -56,11 +52,10 @@
+   HINTS
+   $ENV{SDLMIXERDIR}
+   $ENV{SDLDIR}
+-  PATH_SUFFIXES lib64 lib
++  PATH_SUFFIXES lib64 lib lib/32 lib/64
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw
+   /opt/local
+diff -ru cmake-2.8.5.ori/Modules/FindSDL_net.cmake cmake-2.8.5/Modules/FindSDL_net.cmake
+--- cmake-2.8.5.ori/Modules/FindSDL_net.cmake	2011-08-05 23:02:50.583706835 +0200
++++ cmake-2.8.5/Modules/FindSDL_net.cmake	2011-08-06 00:14:20.436725575 +0200
+@@ -33,13 +33,9 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local/include/SDL
+   /usr/include/SDL
+-  /usr/local/include/SDL12
+-  /usr/local/include/SDL11 # FreeBSD ports
+   /usr/include/SDL12
+   /usr/include/SDL11
+-  /usr/local/include
+   /usr/include
+   /sw/include/SDL # Fink
+   /sw/include
+@@ -55,11 +51,10 @@
+   HINTS
+   $ENV{SDLNETDIR}
+   $ENV{SDLDIR}
+-  PATH_SUFFIXES lib64 lib
++  PATH_SUFFIXES lib64 lib lib/32 lib/64
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw
+   /opt/local
+diff -ru cmake-2.8.5.ori/Modules/FindSDL_sound.cmake cmake-2.8.5/Modules/FindSDL_sound.cmake
+--- cmake-2.8.5.ori/Modules/FindSDL_sound.cmake	2011-08-05 23:02:50.583745452 +0200
++++ cmake-2.8.5/Modules/FindSDL_sound.cmake	2011-08-06 00:14:20.436762294 +0200
+@@ -80,13 +80,9 @@
+   $ENV{SDLDIR}/include
+   $ENV{SDLDIR}
+   PATHS
+-  /usr/local/include/SDL
+   /usr/include/SDL
+-  /usr/local/include/SDL12
+-  /usr/local/include/SDL11 # FreeBSD ports
+   /usr/include/SDL12
+   /usr/include/SDL11
+-  /usr/local/include
+   /usr/include
+   /sw/include/SDL # Fink
+   /sw/include
+@@ -106,7 +102,6 @@
+   $ENV{SDLDIR}/lib
+   $ENV{SDLDIR}
+   PATHS
+-  /usr/local/lib
+   /usr/lib
+   /sw/lib
+   /opt/local/lib
+@@ -223,7 +218,6 @@
+          $ENV{SDLSOUNDDIR}
+          $ENV{SDLDIR}/lib
+          $ENV{SDLDIR}
+-         /usr/local/lib
+          /usr/lib
+          /sw/lib
+          /opt/local/lib
+@@ -246,7 +240,6 @@
+          $ENV{SDLSOUNDDIR}
+          $ENV{SDLDIR}/lib
+          $ENV{SDLDIR}
+-         /usr/local/lib
+          /usr/lib
+          /sw/lib
+          /opt/local/lib
+@@ -272,7 +265,6 @@
+          $ENV{SDLSOUNDDIR}
+          $ENV{SDLDIR}/lib
+          $ENV{SDLDIR}
+-         /usr/local/lib
+          /usr/lib
+          /sw/lib
+          /opt/local/lib
+@@ -294,7 +286,6 @@
+          $ENV{SDLSOUNDDIR}
+          $ENV{SDLDIR}/lib
+          $ENV{SDLDIR}
+-         /usr/local/lib
+          /usr/lib
+          /sw/lib
+          /opt/local/lib
+@@ -318,7 +309,6 @@
+          $ENV{SDLSOUNDDIR}
+          $ENV{SDLDIR}/lib
+          $ENV{SDLDIR}
+-         /usr/local/lib
+          /usr/lib
+          /sw/lib
+          /opt/local/lib
+@@ -342,7 +332,6 @@
+          $ENV{SDLSOUNDDIR}
+          $ENV{SDLDIR}/lib
+          $ENV{SDLDIR}
+-         /usr/local/lib
+          /usr/lib
+          /sw/lib
+          /opt/local/lib
+@@ -369,7 +358,6 @@
+          $ENV{SDLSOUNDDIR}
+          $ENV{SDLDIR}/lib
+          $ENV{SDLDIR}
+-         /usr/local/lib
+          /usr/lib
+          /sw/lib
+          /opt/local/lib
+@@ -396,7 +384,6 @@
+            $ENV{SDLSOUNDDIR}
+            $ENV{SDLDIR}/lib
+            $ENV{SDLDIR}
+-           /usr/local/lib
+            /usr/lib
+            /sw/lib
+            /opt/local/lib
+diff -ru cmake-2.8.5.ori/Modules/FindSDL_ttf.cmake cmake-2.8.5/Modules/FindSDL_ttf.cmake
+--- cmake-2.8.5.ori/Modules/FindSDL_ttf.cmake	2011-08-05 23:02:50.583784276 +0200
++++ cmake-2.8.5/Modules/FindSDL_ttf.cmake	2011-08-06 00:14:20.436788732 +0200
+@@ -33,13 +33,9 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local/include/SDL
+   /usr/include/SDL
+-  /usr/local/include/SDL12
+-  /usr/local/include/SDL11 # FreeBSD ports
+   /usr/include/SDL12
+   /usr/include/SDL11
+-  /usr/local/include
+   /usr/include
+   /sw/include/SDL # Fink
+   /sw/include
+@@ -59,13 +55,12 @@
+   PATHS
+   ~/Library/Frameworks
+   /Library/Frameworks
+-  /usr/local
+   /usr
+   /sw
+   /opt/local
+   /opt/csw
+   /opt
+-    PATH_SUFFIXES lib64 lib
++    PATH_SUFFIXES lib64 lib lib/32 lib/64
+ )
+ 
+ SET(SDLTTF_FOUND "NO")
+diff -ru cmake-2.8.5.ori/Modules/FindSelfPackers.cmake cmake-2.8.5/Modules/FindSelfPackers.cmake
+--- cmake-2.8.5.ori/Modules/FindSelfPackers.cmake	2011-08-05 23:02:50.583811931 +0200
++++ cmake-2.8.5/Modules/FindSelfPackers.cmake	2011-08-06 00:14:20.436815341 +0200
+@@ -25,7 +25,6 @@
+   ${CYGWIN_INSTALL_PATH}/bin
+   /bin
+   /usr/bin 
+-  /usr/local/bin
+   /sbin
+ )
+ 
+@@ -34,7 +33,6 @@
+   ${CYGWIN_INSTALL_PATH}/bin
+   /bin
+   /usr/bin 
+-  /usr/local/bin
+   /sbin
+ )
+ 
+diff -ru cmake-2.8.5.ori/Modules/FindTCL.cmake cmake-2.8.5/Modules/FindTCL.cmake
+--- cmake-2.8.5.ori/Modules/FindTCL.cmake	2011-08-05 23:02:50.583937562 +0200
++++ cmake-2.8.5/Modules/FindTCL.cmake	2011-08-06 00:14:20.436930605 +0200
+@@ -79,7 +79,6 @@
+   "${TCL_TCLSH_PATH_PARENT}/lib"
+   "${TK_WISH_PATH_PARENT}/lib"
+   /usr/lib 
+-  /usr/local/lib
+   )
+ 
+ IF(WIN32)
+@@ -159,7 +158,6 @@
+   "${TCL_TCLSH_PATH_PARENT}/include"
+   "${TK_WISH_PATH_PARENT}/include"
+   /usr/include
+-  /usr/local/include
+   /usr/include/tcl${TK_LIBRARY_VERSION}
+   /usr/include/tcl${TCL_LIBRARY_VERSION}
+   /usr/include/tcl8.6
+diff -ru cmake-2.8.5.ori/Modules/FindTclStub.cmake cmake-2.8.5/Modules/FindTclStub.cmake
+--- cmake-2.8.5.ori/Modules/FindTclStub.cmake	2011-08-05 23:02:50.584006211 +0200
++++ cmake-2.8.5/Modules/FindTclStub.cmake	2011-08-06 00:14:20.436985982 +0200
+@@ -67,7 +67,6 @@
+   "${TCL_TCLSH_PATH_PARENT}/lib"
+   "${TK_WISH_PATH_PARENT}/lib"
+   /usr/lib 
+-  /usr/local/lib
+ )
+ 
+ IF(WIN32)
+diff -ru cmake-2.8.5.ori/Modules/FindUnixCommands.cmake cmake-2.8.5/Modules/FindUnixCommands.cmake
+--- cmake-2.8.5.ori/Modules/FindUnixCommands.cmake	2011-08-05 23:02:50.584091400 +0200
++++ cmake-2.8.5/Modules/FindUnixCommands.cmake	2011-08-06 00:14:20.437067770 +0200
+@@ -22,7 +22,6 @@
+   ${CYGWIN_INSTALL_PATH}/bin
+   /bin
+   /usr/bin 
+-  /usr/local/bin
+   /sbin
+ )
+ MARK_AS_ADVANCED(
+@@ -34,7 +33,6 @@
+   ${CYGWIN_INSTALL_PATH}/bin
+   /bin
+   /usr/bin 
+-  /usr/local/bin
+   /sbin
+ )
+ MARK_AS_ADVANCED(
+@@ -46,7 +44,6 @@
+   ${CYGWIN_INSTALL_PATH}/bin
+   /bin
+   /usr/bin 
+-  /usr/local/bin
+   /sbin
+ )
+ MARK_AS_ADVANCED(
+@@ -58,7 +55,6 @@
+   ${CYGWIN_INSTALL_PATH}/bin
+   /bin
+   /usr/bin 
+-  /usr/local/bin
+   /sbin
+ )
+ MARK_AS_ADVANCED(
+@@ -70,7 +66,6 @@
+   ${CYGWIN_INSTALL_PATH}/bin
+   /bin
+   /usr/bin 
+-  /usr/local/bin
+   /sbin
+ )
+ MARK_AS_ADVANCED(
+@@ -85,7 +80,6 @@
+   ${CYGWIN_INSTALL_PATH}/bin
+   /bin
+   /usr/bin 
+-  /usr/local/bin
+   /sbin
+ )
+ MARK_AS_ADVANCED(
+diff -ru cmake-2.8.5.ori/Modules/GetPrerequisites.cmake cmake-2.8.5/Modules/GetPrerequisites.cmake
+--- cmake-2.8.5.ori/Modules/GetPrerequisites.cmake	2011-08-05 23:02:50.585223434 +0200
++++ cmake-2.8.5/Modules/GetPrerequisites.cmake	2011-08-06 00:14:20.438110108 +0200
+@@ -588,7 +588,6 @@
+     "C:/Program Files (x86)/Microsoft Visual Studio 8/VC/BIN"
+     "C:/Program Files/Microsoft Visual Studio .NET 2003/VC7/BIN"
+     "C:/Program Files (x86)/Microsoft Visual Studio .NET 2003/VC7/BIN"
+-    "/usr/local/bin"
+     "/usr/bin"
+     )
+ 
+diff -ru cmake-2.8.5.ori/Source/cmDocumentation.cxx cmake-2.8.5/Source/cmDocumentation.cxx
+--- cmake-2.8.5.ori/Source/cmDocumentation.cxx	2011-08-05 23:02:50.593903919 +0200
++++ cmake-2.8.5/Source/cmDocumentation.cxx	2011-08-06 00:23:26.020516583 +0200
+@@ -1288,6 +1288,7 @@
+ bool cmDocumentation::PrintDocumentationUsage(std::ostream& os)
+ {
+   this->ClearSections();
++  this->AddSectionToPrint("Name");
+   this->AddSectionToPrint("Usage");
+   this->AddSectionToPrint("Options");
+   if(this->ShowGenerators)
+@@ -1314,6 +1315,7 @@
+   this->ClearSections();
+   this->CreateModulesSection();
+   this->AddDocumentIntroToPrint(GET_DOCUMENT_INTRO(Modules));
++  this->AddSectionToPrint("Name");
+   this->AddSectionToPrint("Description");
+   this->AddSectionToPrint("Modules");
+   this->AddSectionToPrint("Copyright");
+@@ -1330,6 +1332,7 @@
+   this->ClearSections();
+   this->CreateCustomModulesSection();
+   this->AddDocumentIntroToPrint(GET_DOCUMENT_INTRO(CustomModules));
++  this->AddSectionToPrint("Name");
+   this->AddSectionToPrint("Description");
+   this->AddSectionToPrint("Custom CMake Modules");
+ // the custom modules are most probably not under Kitware's copyright, Alex
+@@ -1347,6 +1350,7 @@
+ {
+   this->ClearSections();
+   this->AddDocumentIntroToPrint(GET_DOCUMENT_INTRO(Policies));
++  this->AddSectionToPrint("Name");
+   this->AddSectionToPrint("Description");
+   this->AddSectionToPrint("Policies");
+   this->AddSectionToPrint("Copyright");
+@@ -1363,6 +1367,7 @@
+ {
+   this->ClearSections();
+   this->AddDocumentIntroToPrint(GET_DOCUMENT_INTRO(Properties));
++  this->AddSectionToPrint("Name");
+   this->AddSectionToPrint("Properties Description");
+   for (std::vector<std::string>::iterator i = 
+          this->PropertySections.begin();
+@@ -1383,6 +1388,7 @@
+ {
+   this->ClearSections();
+   this->AddDocumentIntroToPrint(GET_DOCUMENT_INTRO(Variables));
++  this->AddSectionToPrint("Name");
+   for (std::vector<std::string>::iterator i = 
+          this->VariableSections.begin();
+        i != this->VariableSections.end(); ++i)
+@@ -1402,6 +1408,7 @@
+ {
+   this->ClearSections();
+   this->AddDocumentIntroToPrint(GET_DOCUMENT_INTRO(Commands));
++  this->AddSectionToPrint("Name");
+   this->AddSectionToPrint("Commands");
+   this->AddSectionToPrint("Copyright");
+   this->AddSectionToPrint("Standard See Also");
+@@ -1416,6 +1423,7 @@
+ {
+   this->ClearSections();
+   this->AddDocumentIntroToPrint(GET_DOCUMENT_INTRO(CompatCommands));
++  this->AddSectionToPrint("Name");
+   this->AddSectionToPrint("Compatibility Commands Description");
+   this->AddSectionToPrint("Compatibility Commands");
+   this->AddSectionToPrint("Copyright");
