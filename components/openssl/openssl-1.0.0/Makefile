@@ -19,6 +19,7 @@
 # CDDL HEADER END
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2011, Alasdair Lumsden <alasdairrr@gmail.com>, OpenIndiana
 #
 include ../../../make-rules/shared-macros.mk
 
@@ -165,10 +166,10 @@ LFLAGS_32 := -I$(BUILD_DIR_32)/include $(LINT_FLAGS)
 LFLAGS_64 := -I$(BUILD_DIR_64)/include $(LINT_FLAGS)
 
 # Set modified lint flags for our lint library targets.
-$(BUILD_DIR_32)/llib-lcrypto.ln: LINT_FLAGS="$(LFLAGS_32)"
-$(BUILD_DIR_32)/llib-lssl.ln: LINT_FLAGS="$(LFLAGS_32)"
-$(BUILD_DIR_64)/llib-lcrypto.ln: LINT_FLAGS="$(LFLAGS_64)"
-$(BUILD_DIR_64)/llib-lssl.ln: LINT_FLAGS="$(LFLAGS_64)"
+$(BUILD_DIR_32)/llib-lcrypto.ln: LINT_FLAGS=$(LFLAGS_32)
+$(BUILD_DIR_32)/llib-lssl.ln: LINT_FLAGS=$(LFLAGS_32)
+$(BUILD_DIR_64)/llib-lcrypto.ln: LINT_FLAGS=$(LFLAGS_64)
+$(BUILD_DIR_64)/llib-lssl.ln: LINT_FLAGS=$(LFLAGS_64)
 
 test:		$(NO_TESTS)
 
