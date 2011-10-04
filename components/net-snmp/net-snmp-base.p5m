@@ -19,6 +19,7 @@
 # CDDL HEADER END
 #
 # Copyright (c) 2010, 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2011, Alasdair Lumsden <alasdairrr@gmail.com>, OpenIndiana
 #
 
 <transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
@@ -551,8 +552,8 @@ file build/prototype/$(MACH64)/usr/sbin/$(MACH64)/snmpd path=usr/sbin/$(MACH64)/
 file build/prototype/$(MACH64)/usr/sbin/$(MACH64)/snmptrapd path=usr/sbin/$(MACH64)/snmptrapd
 file usr/sbin/snmpd path=usr/sbin/$(MACH32)/snmpd
 file usr/sbin/snmptrapd path=usr/sbin/$(MACH32)/snmptrapd
-hardlink path=usr/sbin/snmpd target=../../usr/lib/isaexec
-hardlink path=usr/sbin/snmptrapd target=../../usr/lib/isaexec
+hardlink path=usr/sbin/snmpd target=../../usr/lib/isaexec pkg.linted=true
+hardlink path=usr/sbin/snmptrapd target=../../usr/lib/isaexec pkg.linted=true
 link path=usr/bin/net-snmp-config target=./net-snmp-config-32 variant.arch=i386
 link path=usr/bin/net-snmp-config target=./net-snmp-config-64 variant.arch=sparc
 link path=usr/bin/snmpinform target=snmptrap
