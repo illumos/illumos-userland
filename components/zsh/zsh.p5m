@@ -20,6 +20,7 @@
 
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2011, Alasdair Lumsden <alasdairrr@gmail.com>, OpenIndiana
 #
 
 <transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
@@ -1374,5 +1375,5 @@ file path=usr/share/zsh/$(COMPONENT_VERSION)/functions/Zle/which-command
 file path=usr/share/zsh/$(COMPONENT_VERSION)/functions/Zle/zed-set-file-name
 file path=usr/share/zsh/$(COMPONENT_VERSION)/scripts/newuser
 hardlink path=usr/bin/zsh target=zsh-$(COMPONENT_VERSION)
-link path=etc/zprofile target=profile
+link path=etc/zprofile target=profile pkg.linted=true
 license license license="Zsh License"
