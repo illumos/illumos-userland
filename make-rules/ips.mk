@@ -171,7 +171,7 @@ $(BUILD_DIR)/.published-$(MACH):	$(PUBLISHED)
 
 $(MANIFEST_BASE)-%.installed:	$(MANIFEST_BASE)-%.published
 	@echo "Installing package from manifest: $<"
-	@export PACKAGEFMRI=`cat $< | $(GSED) ':a;N;$!ba;s/\\\n/ /g' | \
+	@export PACKAGEFMRI=`cat $< | $(GSED) ':a;N;$$!ba;s/\\\\\\n/ /g' | \
 		grep '^set name=pkg.fmri' | $(GSED) 's/.*value=//g'` && \
 		echo "Installing package $$PACKAGEFMRI" && \
 		$(PRIV_CMD) pkg install -v $$PACKAGEFMRI ; exit=$$? ; \
