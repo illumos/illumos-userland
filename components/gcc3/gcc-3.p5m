@@ -470,9 +470,9 @@ link path=usr/gnu/share/man/man1/cc.1 \
 link path=usr/gnu/share/man/man1/cpp.1 \
     target=../../../../sfw/share/man/man1/cpp.1
 link path=usr/sfw/libexec/gcc/$(GNU_ARCH)/3.4.3/as \
-    target=../../../../../gnu/$(GNU_ARCH)/bin/as
+    target=../../../../../gnu/$(GNU_ARCH)/bin/as pkg.linted=true
 link path=usr/sfw/libexec/gcc/$(GNU_ARCH)/3.4.3/as \
-    target=../../../../../gnu/$(GNU_ARCH)/bin/as
+    target=../../../../../gnu/$(GNU_ARCH)/bin/as pkg.linted=true
 link path=usr/share/man/man1/g++.1 target=../../../sfw/share/man/man1/g++.1
 link path=usr/share/man/man1/g77.1 target=../../../sfw/share/man/man1/g77.1
 link path=usr/share/man/man1/gcc.1 target=../../../sfw/share/man/man1/gcc.1
