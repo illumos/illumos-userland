@@ -19,6 +19,7 @@
 # CDDL HEADER END
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2011, Alasdair Lumsden <alasdairrr@gmail.com>, OpenIndiana
 #
 
 <transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
@@ -111,17 +112,17 @@ file path=usr/share/quilt/snapshot
 file path=usr/share/quilt/top
 file path=usr/share/quilt/unapplied
 file path=usr/share/quilt/upgrade
-link path=usr/share/quilt/compat/awk target=../../../bin/gawk
-link path=usr/share/quilt/compat/cp target=../../../gnu/bin/cp
-link path=usr/share/quilt/compat/date target=../../../gnu/bin/date
-link path=usr/share/quilt/compat/diff target=../../../gnu/bin/diff
-link path=usr/share/quilt/compat/grep target=../../../gnu/bin/grep
-link path=usr/share/quilt/compat/patch target=../../../gnu/bin/patch
-link path=usr/share/quilt/compat/sed target=../../../gnu/bin/sed
-link path=usr/share/quilt/compat/sendmail target=../../../lib/sendmail
-link path=usr/share/quilt/compat/tail target=../../../gnu/bin/tail
-link path=usr/share/quilt/compat/tar target=../../../bin/gtar
-link path=usr/share/quilt/compat/tr target=../../../gnu/bin/tr
+link path=usr/share/quilt/compat/awk target=../../../bin/gawk pkg.linted=true
+link path=usr/share/quilt/compat/cp target=../../../gnu/bin/cp pkg.linted=true
+link path=usr/share/quilt/compat/date target=../../../gnu/bin/date pkg.linted=true
+link path=usr/share/quilt/compat/diff target=../../../gnu/bin/diff pkg.linted=true
+link path=usr/share/quilt/compat/grep target=../../../gnu/bin/grep pkg.linted=true
+link path=usr/share/quilt/compat/patch target=../../../gnu/bin/patch pkg.linted=true
+link path=usr/share/quilt/compat/sed target=../../../gnu/bin/sed pkg.linted=true
+link path=usr/share/quilt/compat/sendmail target=../../../lib/sendmail pkg.linted=true
+link path=usr/share/quilt/compat/tail target=../../../gnu/bin/tail pkg.linted=true
+link path=usr/share/quilt/compat/tar target=../../../bin/gtar pkg.linted=true
+link path=usr/share/quilt/compat/tr target=../../../gnu/bin/tr pkg.linted=true
 
 legacy pkg=SUNWquiltr \
     desc="Quilt - tool to manage series of patches (0.47) (root)" \
