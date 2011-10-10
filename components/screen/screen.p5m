@@ -78,3 +78,8 @@ legacy pkg=SUNWscreen desc="GNU Screen terminal multiplexer" name="GNU Screen"
 
 
 license screen.license license=GPLv2
+
+# www.illumos.org/issues/1623 screen delivers conflicting file to system/data/terminfo
+<transform file path=.+/screen-bce -> drop>
+<transform file path=.+/screen-s -> drop>
+
