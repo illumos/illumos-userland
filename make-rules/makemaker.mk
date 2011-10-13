@@ -35,12 +35,15 @@ COMMON_PERL_ENV +=	CFLAGS="$(PERL_OPTIMIZE)"
 # directories.
 PERLBD_ARCH = $(BUILD_DIR)/$(MACH32)
 
-$(PERLBD_ARCH)-5.8.4/.configured:		PERL_VERSION=5.8.4
+$(PERLBD_ARCH)-5.10/.configured:		PERL_VERSION=5.10
 $(PERLBD_ARCH)-5.12/.configured:		PERL_VERSION=5.12
 
 BUILD_32 =	$(PERL_VERSIONS:%=$(PERLBD_ARCH)-%/.built)
 INSTALL_32 =	$(BUILD_32:%/.built=%/.installed)
 TEST_32 =	$(BUILD_32:%/.built=%/.tested)
+
+STUDIOFLAGS_GCC_PERL_FIX=	(cd $(@D); /usr/gnu/bin/sed 's/^CCCDLFLAGS = -KPIC/^CCCDLFLAGS = -fPIC/' Makefile > Makefile.tmp; \
+	grep -v '^OPTIMIZE =' Makefile.tmp > Makefile)
 
 
 COMPONENT_CONFIGURE_ENV +=	$(COMMON_PERL_ENV)
@@ -51,6 +54,7 @@ $(PERLBD_ARCH)-%/.configured:	$(SOURCE_DIR)/.prep
 	$(COMPONENT_PRE_CONFIGURE_ACTION)
 	(cd $(@D) ; $(COMPONENT_CONFIGURE_ENV) $(PERL) $(PERL_FLAGS) \
 				Makefile.PL $(CONFIGURE_OPTIONS))
+	$(STUDIOFLAGS_GCC_PERL_FIX)
 	$(COMPONENT_POST_CONFIGURE_ACTION)
 	$(TOUCH) $@
 

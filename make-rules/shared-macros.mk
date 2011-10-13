@@ -30,7 +30,7 @@ ARCHIVE_MIRROR = http://dlc.openindiana.org/oi-build/source-archives
 export DOWNLOAD_SEARCH_PATH +=	$(ARCHIVE_MIRROR)
 
 # The workspace starts at the mercurial root
-export WS_TOP ?=		$(shell hg root)
+export WS_TOP ?=		$(shell hg root)/src/icore
 
 # we want our pkg piplines to fail if there is an error
 # (like if pkgdepend fails in the middle of a pipe), but
@@ -46,7 +46,7 @@ publish:	SHELLOPTS=pipefail
 
 SHELL=	/bin/bash
 
-CONSOLIDATION =	oi-build
+CONSOLIDATION =	icore
 PUBLISHER ?=	$(CONSOLIDATION)
 
 ROOT =			/
@@ -59,7 +59,7 @@ BUILD_NUM =		1.1
 BUILD_VERSION =		$(OS_VERSION)-$(BUILD_NUM)
 
 
-COMPILER =		studio
+COMPILER =		gcc
 BITS =			32
 PYTHON_VERSION =	2.6
 PYTHON_VERSIONS =	2.6
@@ -89,7 +89,7 @@ PKG_REPO =	file:$(WS_REPO)
 COMPONENT_DIR =	$(shell pwd)
 SOURCE_DIR =	$(COMPONENT_DIR)/$(COMPONENT_SRC)
 BUILD_DIR =	$(COMPONENT_DIR)/build
-PROTO_DIR =	$(BUILD_DIR)/prototype/$(MACH)
+PROTO_DIR =	$(BUILD_DIR)/proto/$(MACH)
 
 ETCDIR =	/etc
 USRDIR =	/usr
@@ -209,7 +209,7 @@ BUILD_TOOLS =	/opt
 SPRO_ROOT =	$(BUILD_TOOLS)/SUNWspro
 SPRO_VROOT =	$(SPRO_ROOT)/sunstudio12.1
 
-GCC_ROOT =	/usr/sfw
+GCC_ROOT =	/usr
 
 CC.studio.32 =	$(SPRO_VROOT)/bin/cc
 CXX.studio.32 =	$(SPRO_VROOT)/bin/CC
@@ -224,6 +224,7 @@ CC.gcc.64 =	$(GCC_ROOT)/bin/gcc
 CXX.gcc.64 =	$(GCC_ROOT)/bin/g++
 
 CC =		$(CC.$(COMPILER).$(BITS))
+
 CXX =		$(CXX.$(COMPILER).$(BITS))
 
 lint.32 =	$(SPRO_VROOT)/bin/lint -m32
@@ -253,11 +254,11 @@ JAVA_HOME =	/usr/jdk/instances/jdk1.6.0
 
 # This is the default BUILD version of perl
 # Not necessarily the system's default version, i.e. /usr/bin/perl
-PERL_VERSION =  5.12
+PERL_VERSION =  5.10
 
-PERL_VERSIONS = 5.8.4 5.12
+PERL_VERSIONS = 5.10
 
-PERL.5.8.4 =    /usr/perl5/5.8.4/bin/perl
+PERL.5.10 =     /usr/bin/perl
 PERL.5.12 =     /usr/perl5/5.12/bin/perl
 
 PERL =          $(PERL.$(PERL_VERSION))
@@ -450,7 +451,7 @@ CFLAGS.studio +=	$(studio_OPT) $(studio_XBITS) $(studio_XREGS) \
 #
 
 # GCC Compiler optimization flag
-gcc_OPT =	-O3
+gcc_OPT =	-O2
 
 # GCC PIC code generation.  Use CC_PIC instead to select PIC code generation.
 gcc_PIC =	-fPIC -DPIC
