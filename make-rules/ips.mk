@@ -223,3 +223,5 @@ $(BUILD_DIR)/.package-installed:	$(PKGINSTALLED)
 	$(TOUCH) $@
 
 CLEAN_PATHS +=	required-pkgs.mk
+
+include $(WS_TOP)/make-rules/deb.mk
