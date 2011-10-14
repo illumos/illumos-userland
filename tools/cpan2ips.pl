@@ -38,6 +38,11 @@ sub my_mkdir {
             or fatal "Can't create dir `$path': $!";
     }
 }
+sub uniq {
+    my ($array_ref) = @_;
+    my %hash = map { $_, 1 } @$array_ref;
+    @$array_ref = keys %hash;
+}
 
 sub shell_exec {
     my ($cmd) = @_;
@@ -178,6 +183,7 @@ sub do_package
         my $dep_pkg_name = do_package($_);
         push @pkg_deps, $dep_pkg_name if $dep_pkg_name;
     }
+    uniq \@pkg_deps;
     blab "Required for `$pkg_name' packages: ", (join ', ', @pkg_deps);
 
 
