@@ -99,21 +99,15 @@ our $HAS_YAML = 1;
 eval "no warnings 'all'; use YAML;"; if ($@) { $HAS_YAML = 0 }
 
 my %MODS_CACHE = ();
-if ( opendir(my $perl_modules, $PERL_MODS_DIR) ) {
-    $MODS_CACHE{$_} = 1 foreach grep  { ! m/^\.+$/ } readdir($perl_modules);
-    closedir($perl_modules);
+if (opendir(my $perl_modules, $PERL_MODS_DIR)) {
+    $MODS_CACHE{$_} = 1 foreach grep { ! m/^\.+$/ } readdir($perl_modules);
+    closedir $perl_modules;
 } else {
     fatal "Can't read directory `$PERL_MODS_DIR': $!";
 }
 
 my @modules = @ARGV;
-foreach my $mod ( @modules ) {
-    if (exists $MODS_CACHE{$mod}) {
-        blab "$mod already incorporated";
-    } else {
-        do_package($mod);
-    }
-}
+do_package($_) foreach @modules;
 
 sub do_package
 {
