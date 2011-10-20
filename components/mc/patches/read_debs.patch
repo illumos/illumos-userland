@@ -1,0 +1,20 @@
+--- mc-4.7.5.2.orig/lib/vfs/mc-vfs/extfs/deb.in
++++ mc-4.7.5.2/lib/vfs/mc-vfs/extfs/deb.in
+@@ -46,7 +46,7 @@
+ 	{
+ 		while(<PIPEIN>)
+ 		{
+-			split;
++			@_ = split;
+ 
+ 			$perm=$_[0]; $owgr=$_[1]; $size=$_[2];
+ 			if($_[3] =~ /^\d\d\d\d\-/) { # New tar format
+@@ -100,7 +100,7 @@
+         {
+                while(<PIPEIN>)
+                {
+-                       split;
++                       @_ = split;
+                        $size=$_[0];
+                        last if $size =~ /:/;
+                        next if $size !~ /\d+/;
