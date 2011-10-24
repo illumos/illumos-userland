@@ -138,3 +138,4 @@ file path=usr/lib/python2.6/vendor-packages/Cheetah-2.4.4-py2.6.egg-info/SOURCES
 file path=usr/lib/python2.6/vendor-packages/Cheetah-2.4.4-py2.6.egg-info/top_level.txt
 file path=usr/lib/python2.6/vendor-packages/Cheetah-2.4.4-py2.6.egg-info/dependency_links.txt
 depend fmri=runtime/python-26 type=require
+depend fmri=library/python-2/markdown-26@2.0.1 type=require
