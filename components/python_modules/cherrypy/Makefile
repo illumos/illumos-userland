@@ -30,7 +30,7 @@ COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
 COMPONENT_ARCHIVE_HASH=	sha1:067121c5f31442519ac07138ffe8af6f7c7465d2
 COMPONENT_ARCHIVE_URL=	http://download.cherrypy.org/cherrypy/$(COMPONENT_VERSION)/$(COMPONENT_ARCHIVE)
-COMPONENT_PROJECT_URL=  http://www.cheetahtemplate.org/
+COMPONENT_PROJECT_URL=  http://www.cherrypy.org/
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/ips.mk
