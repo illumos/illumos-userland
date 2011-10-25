@@ -301,9 +301,10 @@ sub get_debpkg_names {
 # => web-browser-elinks
 #        browser-elinks
 #                elinks
+#   Also works for "original_name"=pkg:/web/browser/elinks:usr/bin/Elinks
     my ($fmri) = @_;
     my @names = ();
-    if ($fmri =~ m,^(?:pkg:/)?([^@]+)(?:@.+)?$,) {
+    if ($fmri =~ m,^(?:pkg:/)?([^:@]+)(?:[:@].+)?$,) {
         my $pkg = $1;
         my @parts = split /\//, $pkg;
         while (@parts) {
@@ -314,6 +315,9 @@ sub get_debpkg_names {
     } else {
         fatal "Can't parse FMRI to get dpkg name: `$fmri'";
     }
+}
+sub get_debpkg_name {
+    return (get_debpkg_names @_)[0]
 }
 
 sub get_ips_version {
@@ -431,14 +435,13 @@ foreach my $manifest_file (@ARGV) {
     my $debname = shift @provides; # main name (web-browser-elinks)
     my $debsection = get_pkg_section $debname;
     my $debpriority = exists $$manifest_data{'pkg.priority'} ?  $$manifest_data{'pkg.priority'} : 'optional';
+    my @replaces = ();
 
     foreach my $l (@{$$manifest_data{'legacy'}}) {
-        push @provides, $$l{'pkg'};
+        push @provides, get_debpkg_name $$l{'pkg'};
     }
-    my $provides_str = join(', ', @provides);
     my $pkgdir = "$DEBS_DIR/$debname";
     blab "Main package name: $debname";
-    blab "Other names: $provides_str";
 
     my $ipsversion = get_ips_version $$manifest_data{'pkg.fmri'};
     my $debversion = undef;
@@ -462,6 +465,7 @@ foreach my $manifest_file (@ARGV) {
             my $dir_name = "$pkgdir/$$dir{'path'}";
             my_mkdir $dir_name, $$dir{'mode'};
             my_chown $$dir{'owner'}, $$dir{'group'}, $dir_name;
+            push @replaces, get_debpkg_name $$dir{original_name} if exists $$dir{original_name};
         }
     }
 
@@ -487,6 +491,7 @@ foreach my $manifest_file (@ARGV) {
             my_chmod $$file{'mode'}, $dst;
 
             push @conffiles, $$file{'path'} if exists $$file{'preserve'};
+            push @replaces, get_debpkg_name $$file{original_name} if exists $$file{original_name};
         }
     }
 
@@ -528,11 +533,13 @@ foreach my $manifest_file (@ARGV) {
     push @depends, @{guess_required_deps($pkgdir)};
 
     uniq \@depends;
-    # When a program and a library are in the same package:
-    @depends = grep {$_ ne $debname} @depends;
+    uniq \@replaces;
+    uniq \@provides;
     uniq \@predepends;
     uniq \@recommends;
     uniq \@conflicts;
+    # When a program and a library are in the same package:
+    @depends = grep {$_ ne $debname} @depends;
 
 
     my $control = '';
@@ -544,17 +551,19 @@ foreach my $manifest_file (@ARGV) {
     $control .= "Maintainer: $MAINTAINER\n";
     $control .= "Architecture: $ARCH\n";
 
+
     $control .= "Description: $$manifest_data{'pkg.summary'}\n";
     $changes{'Description'} .= "\n $debname - $$manifest_data{'pkg.summary'}";
 
     $control .= wrap(' ', ' ', $$manifest_data{'pkg.description'}) . "\n"
         if exists $$manifest_data{'pkg.description'};
 
-    $control .= "Provides: $provides_str\n";
+    $control .= 'Provides: ' . join(', ', @provides) . "\n" if @provides;
     $control .= 'Depends: ' . join(', ', @depends) . "\n" if @depends;
     $control .= 'Pre-Depends: ' . join(', ', @predepends) . "\n" if @predepends;
     $control .= 'Recommends: ' . join(', ', @recommends) . "\n" if @recommends;
     $control .= 'Conflicts: ' . join(', ', @conflicts) . "\n" if @conflicts;
+    $control .= 'Replaces: ' . join(', ', @replaces) . "\n" if @replaces;
     $control .= "Installed-Size: $installed_size\n";
 
     $control .= "Origin: $$manifest_data{'info.upstream_url'}\n"
@@ -570,7 +579,6 @@ foreach my $manifest_file (@ARGV) {
     if (@conffiles) {
        write_file "$pkgdir/DEBIAN/conffiles", (join "\n", @conffiles);
     }
-
 
     my $preinst = '';
     my $postinst = '';
