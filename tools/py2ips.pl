@@ -148,6 +148,7 @@ foreach my $pkg (@ARGV) {
          grep { /^\w/ }
          @{get_output "cat $pkg_name.egg-info/requires.txt"}
     }
+    uniq \@pkg_deps;
     blab "Dependencies: ", (join ', ', @pkg_deps);
 
     my $pkg_summary = '';
