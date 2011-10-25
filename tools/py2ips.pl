@@ -113,6 +113,7 @@ foreach my $pkg (@ARGV) {
         fatal "Can't parse archive name: $archive"
     }
 
+    $pkg_name =~ s/_/-/g;
     my $pkg_name_lc = lc $pkg_name;
     blab "Package name: $pkg_name";
 

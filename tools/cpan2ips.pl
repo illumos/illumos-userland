@@ -140,6 +140,7 @@ sub do_package
     $cpan_file_basename =~ /^(.+)-([^-]+)\.tar\.(.+)$/ ||  fatal "Can't parse $cpan_file_basename";
     my ($cpan_name, $pkg_version, $tar_comp) = ($1, $2, $3);
     my $pkg_name = lc $cpan_name;
+    $pkg_name =~ s/_/-/g;
 
     blab "CPAN file: $cpan_file";
     blab "Package name: $pkg_name";
