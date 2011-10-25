@@ -2,13 +2,7 @@
 
 use strict;
 use warnings FATAL => 'all';
-use integer;
-use Data::Dumper;
-use Getopt::Long qw(:config no_ignore_case);
-use File::Copy;
 use File::Basename;
-use Cwd;
-use CPAN;
 
 sub blab {
     print 'py2ips: ', @_, "\n";
