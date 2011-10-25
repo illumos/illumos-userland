@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 
+# Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved.
+
 # Based on ideas of cpan2tgz by Jason Woodward <woodwardj@jaos.org>
 # http://software.jaos.org/
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 
+# Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved.
+
 use strict;
 use warnings FATAL => 'all';
 use File::Basename;
