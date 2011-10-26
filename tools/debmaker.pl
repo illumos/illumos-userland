@@ -518,6 +518,7 @@ foreach my $manifest_file (@ARGV) {
     my @depends = ();
     my @predepends = ();
     my @recommends = ();
+    my @suggests = ();
     my @conflicts = ();
     blab "Getting dependencies ...";
     foreach my $dep (@{$$manifest_data{'depend'}}) {
@@ -526,7 +527,7 @@ foreach my $manifest_file (@ARGV) {
             blab "Dependency: $dep_pkg ($$dep{'type'})";
             push @depends,    $dep_pkg if $$dep{'type'} eq 'require';
             push @predepends, $dep_pkg if $$dep{'type'} eq 'origin';
-            # push @recommends, $dep_pkg if $$dep{'type'} eq 'optional';
+            push @suggests,   $dep_pkg if $$dep{'type'} eq 'optional';
             push @conflicts,  $dep_pkg if $$dep{'type'} eq 'exclude';
         }
     }
@@ -537,6 +538,7 @@ foreach my $manifest_file (@ARGV) {
     uniq \@provides;
     uniq \@predepends;
     uniq \@recommends;
+    uniq \@suggests;
     uniq \@conflicts;
     # When a program and a library are in the same package:
     @depends = grep {$_ ne $debname} @depends;
@@ -558,12 +560,14 @@ foreach my $manifest_file (@ARGV) {
     $control .= wrap(' ', ' ', $$manifest_data{'pkg.description'}) . "\n"
         if exists $$manifest_data{'pkg.description'};
 
-    $control .= 'Provides: ' . join(', ', @provides) . "\n" if @provides;
-    $control .= 'Depends: ' . join(', ', @depends) . "\n" if @depends;
+    $control .= 'Provides: '    . join(', ', @provides)   . "\n" if @provides;
+    $control .= 'Depends: '     . join(', ', @depends)    . "\n" if @depends;
     $control .= 'Pre-Depends: ' . join(', ', @predepends) . "\n" if @predepends;
-    $control .= 'Recommends: ' . join(', ', @recommends) . "\n" if @recommends;
-    $control .= 'Conflicts: ' . join(', ', @conflicts) . "\n" if @conflicts;
-    $control .= 'Replaces: ' . join(', ', @replaces) . "\n" if @replaces;
+    $control .= 'Recommends: '  . join(', ', @recommends) . "\n" if @recommends;
+    $control .= 'Suggests: '    . join(', ', @suggests)   . "\n" if @suggests;
+    $control .= 'Conflicts: '   . join(', ', @conflicts)  . "\n" if @conflicts;
+    $control .= 'Replaces: '    . join(', ', @replaces)   . "\n" if @replaces;
+
     $control .= "Installed-Size: $installed_size\n";
 
     $control .= "Origin: $$manifest_data{'info.upstream_url'}\n"

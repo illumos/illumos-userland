@@ -139,23 +139,27 @@ foreach my $pkg (@ARGV) {
     my_chdir '../__srcdir__';
     shell_exec 'python setup.py install --root=../__destdir__ --prefix=/usr';
 
-    # FIXME: versions (kid >= 0.9.6)
-    my @pkg_deps = ();
+    my %pkg_deps = ();
     if ( -f "$pkg_name.egg-info/requires.txt") {
-        @pkg_deps =
-         map { s/^([-\w]+).*/$1/; lc $_ }
-         grep { /^\w/ }
-         @{get_output "cat $pkg_name.egg-info/requires.txt"}
+        my $type = 'require'; # All deps before the first section ([...])
+                               # are mandatory; others are optional
+        foreach (@{get_output "cat $pkg_name.egg-info/requires.txt"}) {
+            $type = 'optional' if /^\[.+\]/;
+            next unless /^\w/;
+            s/^([-.\w]+).*/$1/;
+            my $pkg = lc;
+            $pkg = 'distribute' if $pkg eq 'setuptools';
+            if (! exists $pkg_deps{$pkg}) {
+                $pkg_deps{$pkg} = $type;
+            } else {
+                warning "Dependency on `$pkg' already set to $pkg_deps{$pkg}"
+                    if $pkg_deps{$pkg} ne $type
+            }
+        }
     }
-    uniq \@pkg_deps;
-    if (grep {$_ eq 'setuptools'} @pkg_deps) {
-        @pkg_deps = map {$_ eq 'setuptools' ? 'distribute' : $_} @pkg_deps;
-        warning "Dependencies: 'setuptools' replaced with 'distribute'"
-    }
-    blab 'Dependencies: ', (join ', ', @pkg_deps);
 
     my $pkg_summary = '';
-    for my $dir ( ("$pkg_name.egg-info", '.') ) {
+    for my $dir ( ("lib/$pkg_name.egg-info", "$pkg_name.egg-info", '.') ) {
         if ( -f "$dir/PKG-INFO") {
            $pkg_summary = get_output_line "grep Summary: $dir/PKG-INFO | sed 's/Summary: *//'";
            last;
@@ -173,8 +177,8 @@ MANIFEST
     $ips_manifest .= "\n";
 
     $ips_manifest .= "depend fmri=pkg:/runtime/python-$pyversion type=require\n";
-    $ips_manifest .= "depend fmri=pkg:/library/python-2/${_}-$pyversion type=require\n"
-        foreach @pkg_deps;
+    $ips_manifest .= "depend fmri=pkg:/library/python-2/${_}-$pyversion type=$pkg_deps{$_}\n"
+        foreach keys %pkg_deps;
 
     $ips_manifest .= "\n";
 
