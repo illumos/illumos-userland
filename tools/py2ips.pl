@@ -87,13 +87,12 @@ sub trim {
 
 
 
-
 my $pyversion = get_output_line 'python --version 2>&1';
 if ($pyversion =~ /Python +(\d)\.(\d)\..+/) {
     $pyversion = "$1$2";
     blab "Python: $pyversion"
 } else {
-    fatal "Can't parse Python version"
+    fatal "Can't parse Python version: $pyversion"
 }
 
 foreach my $pkg (@ARGV) {
@@ -113,7 +112,7 @@ foreach my $pkg (@ARGV) {
         fatal "Can't parse archive name: $archive"
     }
 
-    $pkg_name =~ s/_/-/g;
+    $pkg_name =~ s/_/-/g; # _ is not allowed in dpkg names
     my $pkg_name_lc = lc $pkg_name;
     blab "Package name: $pkg_name";
 
@@ -138,7 +137,7 @@ foreach my $pkg (@ARGV) {
 
 
     my_chdir '../__srcdir__';
-    shell_exec qq!python setup.py install --root=../__destdir__ --prefix=/usr !;
+    shell_exec 'python setup.py install --root=../__destdir__ --prefix=/usr';
 
     # FIXME: versions (kid >= 0.9.6)
     my @pkg_deps = ();
@@ -149,7 +148,11 @@ foreach my $pkg (@ARGV) {
          @{get_output "cat $pkg_name.egg-info/requires.txt"}
     }
     uniq \@pkg_deps;
-    blab "Dependencies: ", (join ', ', @pkg_deps);
+    if (grep {$_ eq 'setuptools'} @pkg_deps) {
+        @pkg_deps = map {$_ eq 'setuptools' ? 'distribute' : $_} @pkg_deps;
+        warning "Dependencies: 'setuptools' replaced with 'distribute'"
+    }
+    blab 'Dependencies: ', (join ', ', @pkg_deps);
 
     my $pkg_summary = '';
     for my $dir ( ("$pkg_name.egg-info", '.') ) {
