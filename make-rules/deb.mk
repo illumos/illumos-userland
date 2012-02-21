@@ -1,7 +1,7 @@
 
 # shared-macros.mk and ips.mk must be included before
 
-DEBMAKER = $(WS_TOOLS)/debmaker.pl
+DEBMAKER = $(WS_TOOLS)/debmaker
 DEBVERSION ?= $(BUILD_NUM).0
 
 # Where to find binaries
