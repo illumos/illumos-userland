@@ -31,8 +31,14 @@ ARCHIVE_MIRROR = http://dlc.openindiana.org/oi-build/source-archives
 
 export DOWNLOAD_SEARCH_PATH +=	$(ARCHIVE_MIRROR)
 
-# The workspace starts at the mercurial root
-export WS_TOP ?=		$(shell hg root)
+# The workspace starts at the mercurial/git root
+HG_ROOT = $(shell hg root 2>/dev/null)
+
+ifneq (,$(HG_ROOT))
+WS_TOP = $(HG_ROOT)
+else
+WS_TOP = $(shell dirname $(shell cd $(shell git rev-parse --git-dir) && pwd))
+endif
 
 # we want our pkg piplines to fail if there is an error
 # (like if pkgdepend fails in the middle of a pipe), but
