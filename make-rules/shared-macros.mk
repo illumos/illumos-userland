@@ -27,7 +27,7 @@ PATH=/usr/bin:/usr/gnu/bin
 
 # The location of a mirror of community source archives that we build in this
 # gate.
-ARCHIVE_MIRROR = http://dlc.openindiana.org/oi-build/source-archives
+ARCHIVE_MIRROR ?= http://dlc.openindiana.org/oi-build/source-archives
 
 export DOWNLOAD_SEARCH_PATH +=	$(ARCHIVE_MIRROR)
 
