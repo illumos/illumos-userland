@@ -30,6 +30,10 @@ COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
 COMPONENT_ARCHIVE_HASH=	sha1:f7a27d5aeb07748eb6e924abfcfcf469c378b13e
 COMPONENT_ARCHIVE_URL=	$(EXTERNAL_ARCHIVE_MIRROR)/$(SOURCE_ARCHIVE)
 
+# we need to override CONFIGURE_DEFAULT_COMPILERS because GCC uses a configure that
+# can't deal with CC as an argument
+CONFIGURE_DEFAULT_COMPILERS= no
+
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
@@ -50,10 +54,6 @@ LD_B_DIRECT=
 
 CONFIGURE_PREFIX =	/usr/sfw
 
-# we need to override CONFIGURE_OPTIONS because GCC uses a configure that
-# can't deal with CC as an argument
-CONFIGURE_OPTIONS =	 --prefix=$(CONFIGURE_PREFIX)
-CONFIGURE_OPTIONS +=	 --mandir=$(CONFIGURE_MANDIR)
 CONFIGURE_OPTIONS +=	 --infodir=$(CONFIGURE_PREFIX)/share/info
 CONFIGURE_OPTIONS +=	--without-gnu-ld --with-ld=/usr/bin/ld
 CONFIGURE_OPTIONS +=	--enable-languages='c,c++,f77,objc'
