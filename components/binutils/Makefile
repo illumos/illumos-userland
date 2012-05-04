@@ -18,6 +18,7 @@
 #
 # CDDL HEADER END
 #
+# Copyright (c) 2012 Nexenta Systems, Inc.  All rights reserved.
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
 include ../../make-rules/shared-macros.mk
@@ -32,11 +33,6 @@ COMPONENT_ARCHIVE_HASH=	sha1:a150b97ec47996bf8f01d6bc14d41587faa4bbff
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
-
-PARCH =		$(MACH:i386=i386-pc)
-GNU_ARCH =	$(PARCH:sparc=sparc-sun)-solaris$(SOLARIS_VERSION)
-
-PKG_MACROS +=	GNU_ARCH="$(GNU_ARCH)"
 
 CONFIGURE_PREFIX =	/usr/gnu
 

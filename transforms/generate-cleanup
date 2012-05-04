@@ -18,6 +18,7 @@
 #
 # CDDL HEADER END
 #
+# Copyright (c) 2012 Nexenta Systems, Inc.  All rights reserved.
 # Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
 #
 
@@ -53,7 +54,7 @@
 <transform dir file link hardlink -> \
 	edit path "/(sparc|i386)/" "/$!(MACH)/">
 <transform dir file link hardlink -> \
-	edit path "/(sparc|i386)-(sun|pc)-solaris\d\.\d+" "/$!(MACH)-$!(PLAT)-solaris$!(SOLARIS_RELEASE)">
+	edit path "/(sparc|i386)-(sun|pc)-solaris\d\.\d+" "/$!(GNU_ARCH)">
 
 <transform dir file link hardlink -> \
 	edit target "/(sparcv9|amd64)$" "/$!(MACH64)">
@@ -68,7 +69,7 @@
 <transform dir file link hardlink -> \
 	edit target "/(sparc|i386)/" "/$!(MACH)/">
 <transform dir file link hardlink -> \
-	edit target "/(sparc|i386)-(sun|pc)-solaris\d\.\d+" "/$!(MACH)-$!(PLAT)-solaris$!(SOLARIS_RELEASE)">
+	edit target "/(sparc|i386)-(sun|pc)-solaris\d\.\d+" "/$!(GNU_ARCH)">
 
 # <transform dir file link hardlink -> \
 # 	edit path "$(COMPONENT_NAME)" "$!(COMPONENT_NAME)">

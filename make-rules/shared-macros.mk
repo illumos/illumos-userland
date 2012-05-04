@@ -277,6 +277,17 @@ PERL_ARCH =     $(shell $(PERL) -e 'use Config; print $$Config{archname}')
 #PERL_CC =      $(shell $(PERL) -e 'use Config; print $$Config{cc}')
 PERL_OPTIMIZE = $(shell $(PERL) -e 'use Config; print $$Config{optimize}')
 
+ifeq ($(MACH),sparc)
+PLAT =	sun
+else
+PLAT =	pc
+endif
+
+GNU_ARCH    =   $(MACH)-$(PLAT)-solaris$(SOLARIS_VERSION)
+GNU_ARCH_64 =   $(MACH64:amd64=x86_64)-$(PLAT)-solaris$(SOLARIS_VERSION)
+
+PKG_MACROS +=   GNU_ARCH=$(GNU_ARCH)
+PKG_MACROS +=   GNU_ARCH_64=$(GNU_ARCH_64)
 PKG_MACROS +=   PERL_ARCH=$(PERL_ARCH)
 PKG_MACROS +=   PERL_VERSION=$(PERL_VERSION)
 

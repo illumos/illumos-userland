@@ -18,6 +18,7 @@
 #
 # CDDL HEADER END
 #
+# Copyright (c) 2012 Nexenta Systems, Inc.  All rights reserved.
 # Copyright (c) 2011, OpenIndiana project. All rights reserved.
 #
 include ../../make-rules/shared-macros.mk
@@ -37,11 +38,6 @@ include ../../make-rules/ips.mk
 GCC_ROOT=/usr/gcc/4.4
 COMPILER=gcc
 
-# workarround plattform, EC uses PLAT makro, should be reimplemented in shared-macros.mk
-# ore replaced
-PLAT=$(shell uname -p | sed 's/i386/pc/;s/sparc/sun/')
-PKG_MACROS += PLAT=$(PLAT)
-
 CPPFLAGS+= -fexceptions
 
 CONFIGURE_PREFIX    =           /usr/gcc/4.4
@@ -58,7 +54,6 @@ CONFIGURE_OPTIONS  +=           --enable-stage1-languages=c
 CONFIGURE_OPTIONS  +=           --enable-languages=c,c++,objc,fortran
 CONFIGURE_OPTIONS  +=           --with-stage1-ldflags="-R$(CONFIGURE_PREFIX)/lib"
 CONFIGURE_OPTIONS  +=           --with-boot-ldflags="-R$(CONFIGURE_PREFIX)/lib"
-CONFIGURE_OPTIONS  +=           --build=$(MACH)-$(PLAT)-solaris$(SOLARIS_VERSION)
 
 include ../../make-rules/shared-targets.mk
 
