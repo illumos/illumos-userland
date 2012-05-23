@@ -19,6 +19,7 @@
 # CDDL HEADER END
 #
 # Copyright (c) 2010, Oracle and/or it's affiliates.  All rights reserved.
+# Copyright (c) 2012, Nexenta Systems, Inc.  All rights reserved.
 #
 
 include ../make-rules/shared-macros.mk
@@ -27,7 +28,7 @@ download setup prep build install publish validate:	time-$(MACH32).so \
 							time-$(MACH64).so
 
 time-$(MACH64).o:			BITS=64
-time-$(MACH32).o time-$(MACH64).o:	CFLAGS += -Kpic
+time-$(MACH32).o time-$(MACH64).o:	CFLAGS += $(CC_PIC)
 
 time-$(MACH32).o time-$(MACH64).o:	time.c
 	$(CC) $(CFLAGS) -c -o $@ $<
